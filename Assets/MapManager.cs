@@ -34,6 +34,7 @@ public class MapManager : MonoBehaviour
     int _randomPosX;
     int _randomPosz;
     int keepMInArea = 0;
+    int _keepRandomPosX;
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +67,7 @@ public class MapManager : MonoBehaviour
                 _randomPosX = Random.Range(1, keepMInArea);
                 Debug.Log(_randomPosX);
             }
-            else if (i == _areaNum - 1)
+            else if (i == _areaNum - 1) //ÅŒã‚Ì‹æ‰æ‚Ìê‡
             {
                 int keepRandomPosX = _randomPosX;
                 keepMInArea = _x - 1;
@@ -76,16 +77,16 @@ public class MapManager : MonoBehaviour
             }
             else
             {
-                int keepRandomPosX = _randomPosX;
-                if (keepRandomPosX !>= 12)
+                _keepRandomPosX = _randomPosX;
+                if (_keepRandomPosX !>= 12)
                 {
                     keepMInArea += _minArea;
                 }
                 else
                 {
-                    keepMInArea += _minArea - keepRandomPosX;
+                    keepMInArea += _minArea - _keepRandomPosX;
                 }
-                _randomPosX = Random.Range(keepRandomPosX + 1, keepMInArea);
+                _randomPosX = Random.Range(_keepRandomPosX + 1, keepMInArea);
                 Debug.Log(keepMInArea + "keepMInArea‚Å‚·‚æ");
                 Debug.Log(_randomPosX + "‚Å‚·‚æ");
             }
@@ -99,7 +100,17 @@ public class MapManager : MonoBehaviour
             {
                 for (int z = _randomPosz - _randomNum; z < _randomPosz + _randomNum; z++)
                 {
-                    Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                    if (x > 0 || z > 0 && x > _x || z > _z)
+                    {
+                        if(x < keepMInArea - 1 || x > _keepRandomPosX +1)
+                        {
+                            Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                        }
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
         }
