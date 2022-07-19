@@ -24,95 +24,107 @@ public class MapManager : MonoBehaviour
 
     public GameObject[] _obj;
 
-    //分割したエリアで精製されるマップのx,z座標
-    int _areaPointx = 0;
-    int _areaPointz = 0;
+    //分割したエリアで精製されるマップの中心（z座標）
+    int _AreaPointz = 0;
 
     /// <summary>分割するエリアの大きさの最大値</summary>
-    int _minArea = 0;
+    int _areaSize = 0;
 
     int _randomPosX;
-    int _randomPosz;
-    int keepMInArea = 0;
-    int _keepRandomPosX;
+    int keepMaxArea = 1;
+
+    int _keepMinAreaSize = 1;
+
+    int _keepBackSide = 0;
+
+    int _center = 0;
+
+    int _keepSide = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        _minArea = _x / _areaNum;
-        //Debug.Log(_minArea);
-
-        //for(int i=0; i<_areaNum; i++)
-        //{
-        //    int _randomNum = Random.Range(_mapMin, _mapMax);
-
-        //    _randomPosX = (Random.Range(0, _x)) - _randomNum;
-        //    _randomPosz = (Random.Range(0, _z)) - _randomNum;
-
-        //    for (int j = _randomPosX;j < _randomPosX + _randomNum;j++)
-        //    {
-        //        for (int k = _randomPosz; k < _randomPosz + _randomNum; k++)
-        //        {
-        //             Instantiate(_obj[(int)obj.walk], new Vector3(j, 0, k), Quaternion.identity);
-        //        }
-        //    }
-        //}
+        _areaSize = _x / _areaNum; //分割する大きさを決める
 
         for (int i = 0; i < _areaNum; i++)
         {
+            _keepMinAreaSize = keepMaxArea; //前回の最大幅を保存する
 
-            if (i == 0)
+            if (i == 0) // 最初の区画
             {
-                keepMInArea = _minArea;
-                _randomPosX = Random.Range(1, keepMInArea);
-                Debug.Log(_randomPosX);
+                keepMaxArea = _areaSize;
+                _randomPosX = Random.Range(1, keepMaxArea);
+                //Debug.Log(_randomPosX + " 最初の中心点");
             }
             else if (i == _areaNum - 1) //最後の区画の場合
             {
-                int keepRandomPosX = _randomPosX;
-                keepMInArea = _x - 1;
-                _randomPosX = Random.Range(keepRandomPosX + 1, keepMInArea);
-                Debug.Log(keepMInArea + "keepMInAreaです");
-                Debug.Log(_randomPosX + "です");
+                keepMaxArea = _x - 1;
+                //Debug.Log(keepMaxArea + "　今回の最大の幅");
+                _randomPosX = Random.Range(_keepMinAreaSize, keepMaxArea);
+                //Debug.Log(_randomPosX + "　最後の中心点");
             }
-            else
+            else // 間の区画
             {
-                _keepRandomPosX = _randomPosX;
-                if (_keepRandomPosX !>= 12)
-                {
-                    keepMInArea += _minArea;
-                }
-                else
-                {
-                    keepMInArea += _minArea - _keepRandomPosX;
-                }
-                _randomPosX = Random.Range(_keepRandomPosX + 1, keepMInArea);
-                Debug.Log(keepMInArea + "keepMInAreaですよ");
-                Debug.Log(_randomPosX + "ですよ");
+                keepMaxArea += _areaSize;
+                //Debug.Log(keepMaxArea + "　今回の最大の幅");
+                _randomPosX = Random.Range(_keepMinAreaSize, keepMaxArea);
+                //Debug.Log(_randomPosX + "　今回の中心点");
             }
 
-            int _randomNum = Random.Range(_mapMin, _mapMax);
+            int _randomNum = Random.Range(_mapMin, _mapMax); // Z座標をランダムで決める
 
-            _areaPointz = Random.Range(1, _z - 1) - _randomNum;
+            _AreaPointz = Random.Range(1, _z - 1) - _randomNum;
+
+            //Debug.Log(count + " 区切った回数");
+
+            _keepSide = _randomPosX - _randomNum; // 各エリアの左端
 
 
+            //エリアを作るfor文
             for (int x = _randomPosX - _randomNum; x < _randomPosX + _randomNum; x++)
             {
-                for (int z = _randomPosz - _randomNum; z < _randomPosz + _randomNum; z++)
+                for (int z = _AreaPointz - _randomNum; z < _AreaPointz + _randomNum; z++)
                 {
-                    if (x > 0 || z > 0 && x > _x || z > _z)
-                    {
-                        if(x < keepMInArea - 1 || x > _keepRandomPosX +1)
-                        {
-                            Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
-                        }
-                    }
-                    else
-                    {
 
+                    if (x > 0 || z > 0 && x > _x || z > _z) // 一番端は外枠になるため
+                    {
+                        if (x > _keepMinAreaSize + 1)
+                        {
+                            if (x < keepMaxArea - 1)
+                            {
+                                Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
+
+                                if (x == keepMaxArea - 2)
+                                {
+                                    _keepBackSide = x;
+                                    Debug.Log(_keepBackSide);
+                                }
+                            }
+                        }
                     }
                 }
             }
+
+            _center = _AreaPointz; // 今回のZ座標を保存
+
+
+            if (i == 0 )
+            {
+                //Debug.Log("うごいた");
+                //for (int backSide = _keepBackSide; backSide < _keepMinAreaSize; backSide++)
+                //{
+                //    Instantiate(_obj[(int)obj.walk], new Vector3(backSide, 0, _center), Quaternion.identity);
+
+                //}
+            }
+            else if(i != 0)
+            {
+                for( int aisle = _keepMinAreaSize; aisle < _keepSide; aisle++)
+                {
+                    Instantiate(_obj[(int)obj.walk], new Vector3(aisle, 0, _center), Quaternion.identity);
+                }
+            }
+
         }
 
     }
