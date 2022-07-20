@@ -13,15 +13,18 @@ public class MapManager : MonoBehaviour
 {
     /// <summary>横幅</summary>
     [SerializeField] private int _x = 50;
-    /// <summary>立幅</summary>
+    /// <summary>縦幅</summary>
     [SerializeField] private int _z = 50;
     /// <summary>エリアの数</summary>
     [SerializeField] int _areaNum = 4;
 
     //部屋の大きさの決めるための範囲
+    /// <summary>エリア大きさの最小値</summary>
     [SerializeField] int _mapMin = 3;
+    /// <summary>エリア大きさの最大値</summary>
     [SerializeField] int _mapMax = 7;
 
+    //床や壁などのオブジェクト
     public GameObject[] _obj;
 
     //分割したエリアで精製されるマップの中心（z座標）
@@ -30,23 +33,33 @@ public class MapManager : MonoBehaviour
     /// <summary>分割するエリアの大きさの最大値</summary>
     int _areaSize = 0;
 
+    //分けたエリアの内でランダムにx座標を取得
+    /// <summary>各区分の中心となるx座標</summary>
     int _randomPosX;
-    int keepMaxArea = 1;
 
+    /// <summary>今のx座標の最大値</summary>
+    int keepMaxArea = 1;
+    //
+    /// <summary>前回のx座標の最大値</summary>
     int _keepMinAreaSize = 1;
 
     int _keepBackSide = 0;
 
+    /// <summary>中心（ｚ座標）</summary>
     int _center = 0;
 
+    /// <summary>各エリアの左端</summary>
     int _keepSide = 0;
+
+    /// <summary>エリアの大きさ</summary>
+    int _randomNum = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         _areaSize = _x / _areaNum; //分割する大きさを決める
 
-        for (int i = 0; i < _areaNum; i++)
+        for (int i = 0; i < _areaNum; i++)　//マップの生成
         {
             _keepMinAreaSize = keepMaxArea; //前回の最大幅を保存する
 
@@ -71,13 +84,13 @@ public class MapManager : MonoBehaviour
                 //Debug.Log(_randomPosX + "　今回の中心点");
             }
 
-            int _randomNum = Random.Range(_mapMin, _mapMax); // Z座標をランダムで決める
+            _randomNum = Random.Range(_mapMin, _mapMax);　//部屋の大きさを決めている
 
-            _AreaPointz = Random.Range(1, _z - 1) - _randomNum;
+            _AreaPointz = Random.Range(1, _z - 1) - _randomNum;　// Z座標をランダムで決める
 
             //Debug.Log(count + " 区切った回数");
 
-            _keepSide = _randomPosX - _randomNum; // 各エリアの左端
+            _keepSide = _randomPosX - _randomNum; // 各エリアの左端を計算
 
 
             //エリアを作るfor文
@@ -88,6 +101,7 @@ public class MapManager : MonoBehaviour
 
                     if (x > 0 || z > 0 && x > _x || z > _z) // 一番端は外枠になるため
                     {
+                        //マップ自体をくっつけないように最大幅から一マス離したところに生成させる
                         if (x > _keepMinAreaSize + 1)
                         {
                             if (x < keepMaxArea - 1)
@@ -107,22 +121,9 @@ public class MapManager : MonoBehaviour
 
             _center = _AreaPointz; // 今回のZ座標を保存
 
-
-            if (i == 0 )
+            for (int aisle = _keepMinAreaSize; aisle < _keepSide; aisle++)
             {
-                //Debug.Log("うごいた");
-                //for (int backSide = _keepBackSide; backSide < _keepMinAreaSize; backSide++)
-                //{
-                //    Instantiate(_obj[(int)obj.walk], new Vector3(backSide, 0, _center), Quaternion.identity);
-
-                //}
-            }
-            else if(i != 0)
-            {
-                for( int aisle = _keepMinAreaSize; aisle < _keepSide; aisle++)
-                {
-                    Instantiate(_obj[(int)obj.walk], new Vector3(aisle, 0, _center), Quaternion.identity);
-                }
+                Instantiate(_obj[(int)obj.walk], new Vector3(aisle, 0, _center), Quaternion.identity);
             }
 
         }
