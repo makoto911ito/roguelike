@@ -44,6 +44,7 @@ public class MapManager : MonoBehaviour
     int _keepMinAreaSize = 1;
 
     int _keepBackSide = 0;
+    int _keepFrontSide = 0;
 
     /// <summary>中心（ｚ座標）</summary>
     int _center = 0;
@@ -53,6 +54,8 @@ public class MapManager : MonoBehaviour
 
     /// <summary>エリアの大きさ</summary>
     int _randomNum = 0;
+
+    int _count = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -72,14 +75,16 @@ public class MapManager : MonoBehaviour
             else if (i == _areaNum - 1) //最後の区画の場合
             {
                 keepMaxArea = _x - 1;
-                //Debug.Log(keepMaxArea + "　今回の最大の幅");
+                Debug.Log(_keepMinAreaSize + "前回の最大の幅");
+                Debug.Log(keepMaxArea + "　今回の最大の幅");
                 _randomPosX = Random.Range(_keepMinAreaSize, keepMaxArea);
                 //Debug.Log(_randomPosX + "　最後の中心点");
             }
             else // 間の区画
             {
                 keepMaxArea += _areaSize;
-                //Debug.Log(keepMaxArea + "　今回の最大の幅");
+                Debug.Log(_keepMinAreaSize + "前回の最大の幅");
+                Debug.Log(keepMaxArea + "　今回の最大の幅");
                 _randomPosX = Random.Range(_keepMinAreaSize, keepMaxArea);
                 //Debug.Log(_randomPosX + "　今回の中心点");
             }
@@ -88,43 +93,72 @@ public class MapManager : MonoBehaviour
 
             _AreaPointz = Random.Range(1, _z - 1) - _randomNum;　// Z座標をランダムで決める
 
-            //Debug.Log(count + " 区切った回数");
-
-            _keepSide = _randomPosX - _randomNum; // 各エリアの左端を計算
-
 
             //エリアを作るfor文
             for (int x = _randomPosX - _randomNum; x < _randomPosX + _randomNum; x++)
             {
                 for (int z = _AreaPointz - _randomNum; z < _AreaPointz + _randomNum; z++)
                 {
-
                     if (x > 0 || z > 0 && x > _x || z > _z) // 一番端は外枠になるため
                     {
                         //マップ自体をくっつけないように最大幅から一マス離したところに生成させる
-                        if (x > _keepMinAreaSize + 1)
+                        if (x >= _keepMinAreaSize + 2)
                         {
-                            if (x < keepMaxArea - 1)
+                            if (x <= keepMaxArea - 2)
                             {
                                 Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                _keepBackSide = x;
+                                _count++;
+                            }
 
-                                if (x == keepMaxArea - 2)
-                                {
-                                    _keepBackSide = x;
-                                    Debug.Log(_keepBackSide);
-                                }
+                            if (_count == 1)
+                            {
+                                _keepFrontSide = x;
                             }
                         }
                     }
                 }
             }
 
-            _center = _AreaPointz; // 今回のZ座標を保存
+            _count = 0;
+            Debug.Log(_keepBackSide + "エリア最後尾の位置");
 
-            for (int aisle = _keepMinAreaSize; aisle < _keepSide; aisle++)
+            //生成したエリアの最後尾のマスから今回の最大幅まで道をつなげる
+            if(i != _areaNum - 1)
             {
-                Instantiate(_obj[(int)obj.walk], new Vector3(aisle, 0, _center), Quaternion.identity);
+                for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
+                {
+                    Debug.Log("動いた");
+                    Instantiate(_obj[(int)obj.walk], new Vector3(miti, 0, _AreaPointz), Quaternion.identity);
+                }
             }
+
+            //前回の最大幅から今回のエリアの一番最初に生成されたの列にところまで道を作る
+            if (i > 0)
+            {
+                for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
+                {
+                    Instantiate(_obj[(int)obj.walk], new Vector3(aisle, 0, _AreaPointz), Quaternion.identity);
+                }
+
+                if(_AreaPointz < _center)
+                {
+                    for(int rodo = _AreaPointz; rodo <= _center; rodo++)
+                    {
+                        Instantiate(_obj[(int)obj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    for(int rodo = _center; rodo <= _AreaPointz; rodo++)
+                    {
+                        Instantiate(_obj[(int)obj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                    }
+                }
+
+            }
+
+            _center = _AreaPointz; // 今回のZ座標を保存
 
         }
 
