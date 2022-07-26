@@ -66,12 +66,14 @@ public class MapManager : MonoBehaviour
 
     int _randomJudgeNum = 0;// どちらの方向に生成するか
 
+    [SerializeField] int _minZLine = 10;
+
     // Start is called before the first frame update
     void Start()
     {
         _areaSize = _x / _areaNum; //分割する大きさを決める
 
-        _zLine = Random.Range(1, _z);// 横の区切りの位置を決める
+        _zLine = Random.Range(_minZLine, _z);// 横の区切りの位置を決める
         Debug.Log(_zLine + " 横区切りの値");
 
         for (int i = 0; i < _areaNum; i++)　//マップの生成
@@ -105,14 +107,14 @@ public class MapManager : MonoBehaviour
 
             // Z座標をランダムで決める
             _areaUnderPointZ = Random.Range(1, _zLine) - _randomNum;// z座標１の所からz座標の区切った場所までの間で決める
-            _areaUpPointZ = Random.Range(_zLine, _z) - _randomNum;// z座標の区切った場所からz座標の最大値までの間で決める
+            _areaUpPointZ = Random.Range(_zLine, _z - 1) - _randomNum;// z座標の区切った場所からz座標の最大値までの間で決める
 
             _randomJudgeNum = Random.Range(0, 2);
 
             //エリアを作るfor文
             for (int x = _randomPosX - _randomNum; x < _randomPosX + _randomNum; x++)
             {
-                if (_randomJudgeNum % 2 == 0)
+                if (_randomJudgeNum == 0)
                 {
                     for (int z = _areaUpPointZ - _randomNum; z < _areaUpPointZ + _randomNum; z++)
                     {
@@ -123,9 +125,9 @@ public class MapManager : MonoBehaviour
                             {
                                 if (x <= keepMaxArea - 2)
                                 {
-                                    if (z > 0 && z < _z)
+                                    if (z < _z)
                                     {
-                                        if (z >= _zLine)
+                                        if (z > _zLine)
                                         {
                                             Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
@@ -146,16 +148,16 @@ public class MapManager : MonoBehaviour
                 {
                     for (int z = _areaUnderPointZ - _randomNum; z < _areaUnderPointZ + _randomNum; z++)
                     {
-                        if (x > 0 && x < _x ) // 一番端は外枠になるため
+                        if (x > 0 && x < _x) // 一番端は外枠になるため
                         {
                             //マップ自体をくっつけないように最大幅から一マス離したところに生成させる
                             if (x >= _keepMinAreaSize + 2)
                             {
                                 if (x <= keepMaxArea - 2)
                                 {
-                                    if(z > 0 && z < _z)
+                                    if (z > 0)
                                     {
-                                        if (z <= _zLine)
+                                        if (z < _zLine)
                                         {
                                             Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
