@@ -331,10 +331,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _x: 80
-  _z: 20
-  _areaNum: 4
-  _mapMin: 3
-  _mapMax: 7
+  _z: 60
+  _areaNum: 6
+  _mapMin: 6
+  _mapMax: 8
   _obj:
   - {fileID: 1443198559807072619, guid: 6013cd496172c0f418a126912491cf18, type: 3}
   - {fileID: 2633517592270577836, guid: cee1a611eb572da4483cd2d8c5ccc60e, type: 3}
