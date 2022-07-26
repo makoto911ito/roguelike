@@ -129,7 +129,7 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z > _zLine)
                                         {
-                                            Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -159,7 +159,7 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z < _zLine)
                                         {
-                                            Instantiate(_obj[(int)obj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -186,7 +186,7 @@ public class MapManager : MonoBehaviour
             //    for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
             //    {
             //        Debug.Log("“®‚¢‚½");
-            //        Instantiate(_obj[(int)obj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
+            //        Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
             //    }
             //}
 
@@ -195,7 +195,7 @@ public class MapManager : MonoBehaviour
             //{
             //    for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
             //    {
-            //        Instantiate(_obj[(int)obj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
+            //        Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
             //    }
 
             //    //“¹‚ð‚Â‚È‚°‚é‚½‚ß‚ÌƒR[ƒh
@@ -203,14 +203,14 @@ public class MapManager : MonoBehaviour
             //    {
             //        for (int rodo = _areaUnderPointZ; rodo <= _center; rodo++)
             //        {
-            //            Instantiate(_obj[(int)obj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+            //            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
             //        }
             //    }
             //    else
             //    {
             //        for (int rodo = _center; rodo <= _areaUnderPointZ; rodo++)
             //        {
-            //            Instantiate(_obj[(int)obj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+            //            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
             //        }
             //    }
 
