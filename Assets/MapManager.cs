@@ -30,6 +30,7 @@ public class MapManager : MonoBehaviour
     //分割したエリアで精製されるマップの中心（z座標）
     int _areaUnderPointZ = 0;
 
+    /// <summary>分割したエリアの上側で生成されるマップの中心（z座標） </summary>
     int _areaUpPointZ = 0;
 
     /// <summary>分割するエリアの大きさの最大値</summary>
@@ -64,8 +65,10 @@ public class MapManager : MonoBehaviour
 
     int _zLine = 0;
 
-    int _randomJudgeNum = 0;// どちらの方向に生成するか
+    /// <summary>どちらの方向に生成するか判定するための変数</summary>
+    int _randomJudgeNum = 0;
 
+    /// <summary>指定エリアを横方向に区切るための範囲の最低値</summary>
     [SerializeField] int _minZLine = 10;
 
     // Start is called before the first frame update
@@ -104,10 +107,11 @@ public class MapManager : MonoBehaviour
             }
 
             _randomNum = Random.Range(_mapMin, _mapMax);　//部屋の大きさを決めている
+            Debug.Log(_randomNum);
 
             // Z座標をランダムで決める
-            _areaUnderPointZ = Random.Range(1, _zLine) - _randomNum;// z座標１の所からz座標の区切った場所までの間で決める
-            _areaUpPointZ = Random.Range(_zLine, _z - 1) - _randomNum;// z座標の区切った場所からz座標の最大値までの間で決める
+            _areaUnderPointZ = Random.Range(1, _zLine);// z座標１の所からz座標の区切った場所までの間で決める
+            _areaUpPointZ = Random.Range(_zLine, _z - 1);// z座標の区切った場所からz座標の最大値までの間で決める
 
             _randomJudgeNum = Random.Range(0, 2);
 
@@ -180,43 +184,88 @@ public class MapManager : MonoBehaviour
             _count = 0;//ここでカウントをリセット
             Debug.Log(_keepBackSide + "エリア最後尾の位置");
 
-            ////生成したエリアの最後尾のマスから今回の最大幅まで道をつなげる
-            //if (i != _areaNum - 1)
-            //{
-            //    for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
-            //    {
-            //        Debug.Log("動いた");
-            //        Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
-            //    }
-            //}
+            //生成したエリアの最後尾のマスから今回の最大幅まで道をつなげる
+            if (i != _areaNum - 1)
+            {
+                if (_randomJudgeNum == 0)
+                {
+                    for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
+                    {
+                        Debug.Log("動いた");
+                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
+                    {
+                        Debug.Log("動いた");
+                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
+                    }
+                }
 
-            ////前回の最大幅から今回のエリアの一番最初に生成されたの列にところまで道を作る
-            //if (i > 0)
-            //{
-            //    for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
-            //    {
-            //        Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
-            //    }
+            }
 
-            //    //道をつなげるためのコード
-            //    if (_areaUnderPointZ < _center)
-            //    {
-            //        for (int rodo = _areaUnderPointZ; rodo <= _center; rodo++)
-            //        {
-            //            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        for (int rodo = _center; rodo <= _areaUnderPointZ; rodo++)
-            //        {
-            //            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
-            //        }
-            //    }
+            //前回の最大幅から今回のエリアの一番最初に生成されたの列にところまで道を作る
+            if (i > 0)
+            {
+                if (_randomJudgeNum == 0)
+                {
+                    for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
+                    {
+                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUpPointZ), Quaternion.identity);
+                    }
 
-            //}
+                    //道をつなげるためのコード
+                    if (_areaUpPointZ < _center)
+                    {
+                        for (int rodo = _areaUpPointZ; rodo <= _center; rodo++)
+                        {
+                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                        }
+                    }
+                    else
+                    {
+                        for (int rodo = _center; rodo <= _areaUpPointZ; rodo++)
+                        {
+                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
+                    {
+                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
+                    }
 
-            _center = _areaUnderPointZ; // 今回のZ座標を保存
+                    //道をつなげるためのコード
+                    if (_areaUnderPointZ < _center)
+                    {
+                        for (int rodo = _areaUnderPointZ; rodo <= _center; rodo++)
+                        {
+                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                        }
+                    }
+                    else
+                    {
+                        for (int rodo = _center; rodo <= _areaUnderPointZ; rodo++)
+                        {
+                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                        }
+                    }
+                }
+
+            }
+
+            if (_randomJudgeNum == 0)
+            {
+                _center = _areaUpPointZ; // 今回のZ座標を保存
+            }
+            else
+            {
+                _center = _areaUnderPointZ; // 今回のZ座標を保存
+            }
 
         }
 
