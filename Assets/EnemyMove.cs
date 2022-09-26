@@ -40,45 +40,17 @@ public class EnemyMove : MonoBehaviour
         {
             if (_count == 0)
             {
-                //if (_player.transform.position.x == this.transform.position.x + 1)
-                //{
-                //    Debug.Log("反応した");
-                //    if (_player.transform.position.z == this.transform.position.z)
-                //    {
-                //        Debug.Log("プレイヤーにダメージを与える");
-                //    }
-                //    else
-                //    {
-                        this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);
-                        //Debug.Log("エネミーがｘ＋１動いた");
-                //    }
-                //}
-                //else
-                //{
-                //    this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);
-                //    //Debug.Log("エネミーがｘ＋１動いた");
-                //}
+                this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);
+                //Debug.Log("エネミーがｘ＋１動いた");
+                RizumuController._eMoveFlag = false;
+                RizumuController._moveFlag = false;
             }
             else
             {
-                //if (_player.transform.position.x == this.transform.position.x - 1)
-                //{
-                //    Debug.Log("反応した");
-                //    if (_player.transform.position.z == this.transform.position.z)
-                //    {
-                //        Debug.Log("プレイヤーにダメージを与える");
-                //    }
-                //    else
-                //    {
-                        this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
-                        //Debug.Log("エネミーがｘ-１動いた");
-                //    }
-                //}
-                //else
-                //{
-                //    this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
-                //    //Debug.Log("エネミーがｘ-１動いた");
-                //}
+                this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
+                //Debug.Log("エネミーがｘ-１動いた");
+                RizumuController._eMoveFlag = false;
+                RizumuController._moveFlag = false;
             }
 
             _count++;
@@ -93,46 +65,18 @@ public class EnemyMove : MonoBehaviour
         {
             if (_count == 0)
             {
-                //if (_player.transform.position.x == this.transform.position.x - 1)
-                //{
-                //    Debug.Log("反応した");
-                //    if (_player.transform.position.z == this.transform.position.z)
-                //    {
-                //        Debug.Log("プレイヤーにダメージを与える");
-                //    }
-                //    else
-                //    {
-                        this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
-                        //Debug.Log("エネミーがｘ-１動いた");
-                //    }
-                //}
-                //else
-                //{
-                //    this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
-                //    //Debug.Log("エネミーがｘ-１動いた");
-                //}
+                this.transform.position = new Vector3(this.transform.position.x - 1, this.transform.position.y, this.transform.position.z);
+                //Debug.Log("エネミーがｘ-１動いた");
+                RizumuController._eMoveFlag = false;
+                RizumuController._moveFlag = false;
 
             }
             else
             {
-                //if (_player.transform.position.x == this.transform.position.x + 1)
-                //{
-                //    Debug.Log("反応した");
-                //    if (_player.transform.position.z == this.transform.position.z)
-                //    {
-                //        Debug.Log("プレイヤーにダメージを与える");
-                //    }
-                //    else
-                //    {
-                        this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);
-                        //Debug.Log("エネミーがｘ＋１動いた");
-                //    }
-                //}
-                //else
-                //{
-                //    this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);
-                //    //Debug.Log("エネミーがｘ＋１動いた");
-                //}
+                this.transform.position = new Vector3(this.transform.position.x + 1, this.transform.position.y, this.transform.position.z);
+                //Debug.Log("エネミーがｘ＋１動いた");
+                RizumuController._eMoveFlag = false;
+                RizumuController._moveFlag = false;
             }
 
             _count++;
