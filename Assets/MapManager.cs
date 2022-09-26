@@ -18,6 +18,8 @@ public class MapManager : MonoBehaviour
     /// <summary>エリアの数</summary>
     [SerializeField] int _areaNum = 4;
 
+    GameObject[,] _areas;
+
     //部屋の大きさの決めるための範囲
     /// <summary>エリア大きさの最小値</summary>
     [SerializeField] int _mapMin = 3;
@@ -74,6 +76,8 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _areas = new GameObject[_x,_z];
+
         _areaSize = _x / _areaNum; //分割する大きさを決める
 
         _zLine = Random.Range(_minZLine, _z);// 横の区切りの位置を決める
@@ -133,7 +137,7 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z > _zLine)
                                         {
-                                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            _areas[x,z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -163,7 +167,7 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z < _zLine)
                                         {
-                                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            _areas[x,z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -192,7 +196,7 @@ public class MapManager : MonoBehaviour
                     for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
                     {
                         Debug.Log("動いた");
-                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
+                        _areas[miti,_areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
                     }
                 }
                 else
@@ -200,7 +204,7 @@ public class MapManager : MonoBehaviour
                     for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
                     {
                         Debug.Log("動いた");
-                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
+                        _areas[miti, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
                     }
                 }
 
@@ -213,7 +217,7 @@ public class MapManager : MonoBehaviour
                 {
                     for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
                     {
-                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUpPointZ), Quaternion.identity);
+                        _areas[aisle, _areaUpPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUpPointZ), Quaternion.identity);
                     }
 
                     //道をつなげるためのコード
@@ -221,14 +225,14 @@ public class MapManager : MonoBehaviour
                     {
                         for (int rodo = _areaUpPointZ; rodo <= _center; rodo++)
                         {
-                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
                     }
                     else
                     {
                         for (int rodo = _center; rodo <= _areaUpPointZ; rodo++)
                         {
-                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
                     }
                 }
@@ -236,7 +240,7 @@ public class MapManager : MonoBehaviour
                 {
                     for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
                     {
-                        Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
+                        _areas[aisle, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
                     }
 
                     //道をつなげるためのコード
@@ -244,14 +248,14 @@ public class MapManager : MonoBehaviour
                     {
                         for (int rodo = _areaUnderPointZ; rodo <= _center; rodo++)
                         {
-                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
                     }
                     else
                     {
                         for (int rodo = _center; rodo <= _areaUnderPointZ; rodo++)
                         {
-                            Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
                     }
                 }
