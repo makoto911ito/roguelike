@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19abfc86226412469738e096ddb2312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _keisoku: 1
+  _keisoku: 0.1
   _text: {fileID: 1416626887}
   _pTaim: 0.3
 --- !u!4 &308127258

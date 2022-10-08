@@ -28,23 +28,16 @@ public class RizumuController : MonoBehaviour
         {
             //Debug.Log("“®‚¢‚½");
             _moveFlag = true;
-            //if (_time > _keisoku + (_pTaim % 2))
-            //{
-            //    _eMoveFlag = true;
-            //}
 
             if (_time > _keisoku + _pTaim) //“ü—Í‚Ìƒ‰ƒO‚ğl—¶‚µ‚Ä’x‚ç‚¹‚Ä‚¢‚é
             {
-                if(PMove._buttonDown == false)
-                {
-                    _eMoveFlag = true;
-                }
+                _eMoveFlag = true;
                 _time = 0;
+                PMove._buttonDown = false;
             }
         }
         else
         {
-            PMove._buttonDown = false;
             _moveFlag = false;
         }
     }

@@ -12,13 +12,13 @@ public enum obj
 public class MapManager : MonoBehaviour
 {
     /// <summary>横幅</summary>
-    [SerializeField] private int _x = 50;
+    [SerializeField] static public int _x = 50;
     /// <summary>縦幅</summary>
-    [SerializeField] private int _z = 50;
+    [SerializeField] static public int _z = 50;
     /// <summary>エリアの数</summary>
     [SerializeField] int _areaNum = 4;
 
-    GameObject[,] _areas;
+    static public GameObject[,] _areas;
 
     //部屋の大きさの決めるための範囲
     /// <summary>エリア大きさの最小値</summary>
