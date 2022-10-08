@@ -56,8 +56,8 @@ public class MapManager : MonoBehaviour
     /// <summary>生成したエリアの中心（ｚ座標）</summary>
     int _center = 0;
 
-    /// <summary>各エリアの左端</summary>
-    int _keepSide = 0;
+    ///// <summary>各エリアの左端</summary>
+    //int _keepSide = 0;
 
     /// <summary>エリアの大きさ</summary>
     int _randomNum = 0;
@@ -65,6 +65,7 @@ public class MapManager : MonoBehaviour
     /// <summary>一番最初に生成されたマスのｘ座標をとるためのカウント</summary>
     int _count = 0;
 
+    /// <summary>横方向の区切り位置</summary>
     int _zLine = 0;
 
     /// <summary>どちらの方向に生成するか判定するための変数</summary>
