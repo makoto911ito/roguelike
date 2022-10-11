@@ -112,11 +112,11 @@ public class MapManager : MonoBehaviour
             }
 
             _randomNum = Random.Range(_mapMin, _mapMax);　//部屋の大きさを決めている
-            Debug.Log(_randomNum);
+            Debug.Log("エリアの大きさ" + _randomNum);
 
             // Z座標をランダムで決める
-            _areaUnderPointZ = Random.Range(1, _zLine);// z座標１の所からz座標の区切った場所までの間で決める
-            _areaUpPointZ = Random.Range(_zLine, _z - 1);// z座標の区切った場所からz座標の最大値までの間で決める
+            _areaUnderPointZ = Random.Range(1, _zLine - 1);// z座標１の所からz座標の区切った場所までの間で決める
+            _areaUpPointZ = Random.Range(_zLine + 1, _z - 3);// z座標の区切った場所からz座標の最大値までの間で決める
 
             _randomJudgeNum = Random.Range(0, 2);
 
@@ -194,15 +194,15 @@ public class MapManager : MonoBehaviour
             {
                 if (_randomJudgeNum == 0)
                 {
-                    for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
+                    for (int miti = _keepBackSide + 1; miti <= keepMaxArea; miti++)
                     {
                         Debug.Log("動いた");
-                        _areas[miti,_areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
+                        _areas[miti, _areaUpPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
                     }
                 }
                 else
                 {
-                    for (int miti = _keepBackSide; miti < keepMaxArea; miti++)
+                    for (int miti = _keepBackSide + 1; miti <= keepMaxArea; miti++)
                     {
                         Debug.Log("動いた");
                         _areas[miti, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
@@ -224,14 +224,14 @@ public class MapManager : MonoBehaviour
                     //道をつなげるためのコード
                     if (_areaUpPointZ < _center)
                     {
-                        for (int rodo = _areaUpPointZ; rodo <= _center; rodo++)
+                        for (int rodo = _areaUpPointZ + 1; rodo < _center; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
                     }
                     else
                     {
-                        for (int rodo = _center; rodo <= _areaUpPointZ; rodo++)
+                        for (int rodo = _center + 1; rodo < _areaUpPointZ; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
@@ -247,14 +247,14 @@ public class MapManager : MonoBehaviour
                     //道をつなげるためのコード
                     if (_areaUnderPointZ < _center)
                     {
-                        for (int rodo = _areaUnderPointZ; rodo <= _center; rodo++)
+                        for (int rodo = _areaUnderPointZ + 1; rodo < _center; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
                     }
                     else
                     {
-                        for (int rodo = _center; rodo <= _areaUnderPointZ; rodo++)
+                        for (int rodo = _center + 1; rodo < _areaUnderPointZ; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
                         }
