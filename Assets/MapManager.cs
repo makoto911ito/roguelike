@@ -74,6 +74,9 @@ public class MapManager : MonoBehaviour
     /// <summary>指定エリアを横方向に区切るための範囲の最低値</summary>
     [SerializeField] int _minZLine = 10;
 
+
+    [SerializeField] SponPlayer _sponPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -273,6 +276,8 @@ public class MapManager : MonoBehaviour
             }
 
         }
+
+        _sponPlayer.Spon();
 
     }
 }
