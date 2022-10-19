@@ -108,16 +108,62 @@ public class PMove : MonoBehaviour
             //    RizumuController._eMoveFlag = true;
             //}
 
+
             if (RizumuController._moveFlag == true && _buttonDown == false)
             {
-                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z + vertical);
+                if (vertical > 0)
+                {
+                    //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
+                    areaController = MapManager._areas[_pointX, _pointZ + 1].GetComponent<AreaController>();
+
+                    if (areaController._onEnemy == true)
+                    {
+
+                    }
+                    else if (areaController._onWall == true)
+                    {
+
+                    }
+                    else
+                    {
+                        areaController._onEnemy = true;
+                        areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
+                        areaController._onPlayer = false;
+                        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, MapManager._areas[_pointX, _pointZ + 1].transform.position.z);
+                        _pointZ = _pointZ + 1;
+                    }
+
+                }
+                else
+                {
+                    //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
+                    areaController = MapManager._areas[_pointX, _pointZ - 1].GetComponent<AreaController>();
+
+                    if (areaController._onEnemy == true)
+                    {
+
+                    }
+                    else if (areaController._onWall == true)
+                    {
+
+                    }
+                    else
+                    {
+                        areaController._onEnemy = true;
+                        areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
+                        areaController._onPlayer = false;
+                        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, MapManager._areas[_pointX, _pointZ - 1].transform.position.z);
+                        _pointZ = _pointZ - 1;
+                    }
+
+                }
             }
             else
             {
                 Debug.Log("MISS");
             }
-            _buttonDown = true;
         }
+        _buttonDown = true;
     }
 
     private void OnCollisionEnter(Collision collision)
