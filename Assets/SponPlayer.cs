@@ -49,7 +49,7 @@ public class SponPlayer : MonoBehaviour
                 else
                 {
                     Debug.Log("ƒvƒŒƒCƒ„[‚Í¶¬‚³‚ê‚½");
-                    Instantiate(_player, new Vector3(MapManager._areas[_randomNumX, _randomNumZ].transform.position.x, 2, MapManager._areas[_randomNumX, _randomNumZ].transform.position.z), Quaternion.identity);
+                    Instantiate(_player, new Vector3(MapManager._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, MapManager._areas[_randomNumX, _randomNumZ].transform.position.z), Quaternion.identity);
                     _spon = true;
                 }
             }
