@@ -15,6 +15,8 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] bool _change;
     [SerializeField] EMove _eMove = EMove.MoveA;
     [SerializeField] GameObject _player;
+    int _pointX;
+    int _pointZ;
 
     // Start is called before the first frame update
     void Start()
@@ -85,6 +87,24 @@ public class EnemyMove : MonoBehaviour
             {
                 _count = 0;
                 _change = false;
+            }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        for (int x = 0; x < MapManager._x; x++)
+        {
+            for (int z = 0; z < MapManager._z; z++)
+            {
+                if (MapManager._areas[x, z] == collision.gameObject)
+                {
+                    //Œ»Ý‚ÌˆÊ’u‚ð’²‚×‚é
+                    _pointX = x;
+                    _pointZ = z;
+                    Debug.Log("Œ»Ý‚Ì”z—ñ”Ô†" + _pointX + " , " + _pointZ);
+                }
             }
         }
     }
