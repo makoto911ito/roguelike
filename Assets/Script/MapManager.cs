@@ -74,13 +74,18 @@ public class MapManager : MonoBehaviour
     /// <summary>指定エリアを横方向に区切るための範囲の最低値</summary>
     [SerializeField] int _minZLine = 10;
 
-
+    /// <summary>プレイヤーを生成するためのスクリプトを参照するための変数</summary>
     [SerializeField] SponPlayer _sponPlayer;
+
+    /// <summary>敵を生成するためのスクリプトを参照するための変数</summary>
+    [SerializeField] SponEnemy _sponEnemy;
+
+    AreaController areaController;
 
     // Start is called before the first frame update
     void Start()
     {
-        _areas = new GameObject[_x,_z];
+        _areas = new GameObject[_x, _z];
 
         _areaSize = _x / _areaNum; //分割する大きさを決める
 
@@ -141,7 +146,7 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z > _zLine)
                                         {
-                                            _areas[x,z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -171,7 +176,7 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z < _zLine)
                                         {
-                                            _areas[x,z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -266,6 +271,7 @@ public class MapManager : MonoBehaviour
 
             }
 
+            //Z座標を保存する
             if (_randomJudgeNum == 0)
             {
                 _center = _areaUpPointZ; // 今回のZ座標を保存
@@ -277,7 +283,34 @@ public class MapManager : MonoBehaviour
 
         }
 
+        //歩けない場所を壁で埋める
+        WallCreate();
+
+        //敵キャラをスポーンさせる
+        _sponEnemy.Spon();
+
+        //プレイヤーをスポーンさせる
         _sponPlayer.Spon();
 
+    }
+
+    void WallCreate()
+    {
+        for (var x = 0; x < _x; x++)
+        {
+            for (var z = 0; z < _z; z++)
+            {
+                if (_areas[x, z] == null)
+                {
+                    _areas[x, z] = Instantiate(_obj[(int)AreaObj.obj2], new Vector3(x, 1, z), Quaternion.identity);
+                    areaController = MapManager._areas[x, z].GetComponent<AreaController>();
+                    areaController._onWall = true;
+                }
+                else
+                {
+
+                }
+            }
+        }
     }
 }

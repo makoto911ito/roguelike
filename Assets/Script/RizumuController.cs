@@ -5,11 +5,20 @@ using UnityEngine.UI;
 
 public class RizumuController : MonoBehaviour
 {
+    /// <summary>タイミングの時間を取得する変数</summary>
     static public float _time;
+    /// <summary>動けるタイミングを決める変数</summary>
     public float _keisoku = 1;
+
+    /// <summary>プレイヤーが動けるかどうか判定するフラグ</summary>
     static public bool _moveFlag = false;
+
+    /// <summary>敵が動けるかどうか判定をするフラグ</summary>
     static public bool _eMoveFlag = false;
+
     public Text _text;
+
+    /// <summary>入力を受け受けている時間</summary>
     [SerializeField] float _pTaim = 0.3f;
 
     // Start is called before the first frame update

@@ -2,28 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーを生成するためのスクリプト
+/// </summary>
 public class SponPlayer : MonoBehaviour
 {
+    /// <summary>配列の一つ目の要素の場所をランダムで見るための変数</summary>
     int _randomNumX;
+
+    /// <summary>配列の二つ目の要素の場所をランダムで見るための変数</summary>
     int _randomNumZ;
+
+    /// <summary>スポーンできたかどうかのフラグ</summary>
     bool _spon;
 
+    /// <summary>プレイヤーのオブジェクトを取得</summary>
     [SerializeField] GameObject _player;
 
     /// <summary>移動先・前を確認、変更するためのAreaControllerスクリプトを獲得する変数</summary>
     AreaController areaController;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void Spon()
     {

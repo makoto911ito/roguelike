@@ -287,6 +287,53 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 170, y: 107}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &182205731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 182205733}
+  - component: {fileID: 182205732}
+  m_Layer: 0
+  m_Name: SponEnemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &182205732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182205731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b29557d33ac5d47879c9216d2b5044, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemy:
+  - {fileID: 2633517592270577836, guid: cee1a611eb572da4483cd2d8c5ccc60e, type: 3}
+  _sponEnemyNum: 5
+--- !u!4 &182205733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182205731}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &267485460
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +345,7 @@ GameObject:
   - component: {fileID: 267485462}
   - component: {fileID: 267485461}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: RizumuController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,7 +379,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558073973
 GameObject:
@@ -367,7 +414,7 @@ RectTransform:
   m_Children:
   - {fileID: 134823624}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -484,8 +531,10 @@ MonoBehaviour:
   _mapMax: 7
   _obj:
   - {fileID: 1443198559807072619, guid: 6013cd496172c0f418a126912491cf18, type: 3}
+  - {fileID: 6248078766296572238, guid: bcb1a5ce3d28966489462d2a46f40804, type: 3}
   _minZLine: 10
   _sponPlayer: {fileID: 1690160229}
+  _sponEnemy: {fileID: 182205732}
 --- !u!1 &830976139
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,7 +600,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1690160227
 GameObject:
@@ -564,7 +613,7 @@ GameObject:
   - component: {fileID: 1690160228}
   - component: {fileID: 1690160229}
   m_Layer: 0
-  m_Name: player
+  m_Name: SponPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -583,7 +632,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1690160229
 MonoBehaviour:
