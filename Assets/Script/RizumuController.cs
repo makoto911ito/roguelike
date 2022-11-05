@@ -13,8 +13,8 @@ public class RizumuController : MonoBehaviour
     /// <summary>プレイヤーが動けるかどうか判定するフラグ</summary>
     static public bool _moveFlag = false;
 
-    /// <summary>敵が動けるかどうか判定をするフラグ</summary>
-    static public bool _eMoveFlag = false;
+    /// <summary>敵を動かす関数を呼ぶためにmanagerを取得</summary>
+    [SerializeField] EnemyManager _enemyManager = null;
 
     public Text _text;
 
@@ -40,14 +40,14 @@ public class RizumuController : MonoBehaviour
 
             if (_time > _keisoku + _pTaim) //入力のラグを考慮して遅らせている
             {
-                _eMoveFlag = true;
+                _enemyManager.GoEnemyMove();
                 _time = 0;
                 PMove._buttonDown = false;
             }
         }
         else
         {
-            _moveFlag = false;
+
         }
     }
 }

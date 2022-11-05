@@ -40,11 +40,6 @@ public class PMove : MonoBehaviour
 
         if (Input.GetButtonDown("Horizontal"))
         {
-            //if(_buttonDown == false)//“ü—ÍƒL[‚ğ‰Ÿ‚³‚ê‚½‚Æ‚«‚É“G‚àˆê‚É“®‚¢‚Ä‚Ù‚µ‚¢‚Ì‚Å
-            //{
-            //    RizumuController._eMoveFlag = true;
-            //}
-
             if (RizumuController._moveFlag == true && _buttonDown == false)
             {
                 if (velox > 0)
@@ -117,11 +112,11 @@ public class PMove : MonoBehaviour
                     //ˆÚ“®æ‚Ìî•ñ‚É‚æ‚Á‚Äs“®‚ğŒˆ‚ß‚é
                     if (areaController._onEnemy == true)
                     {
-
+                        //UŒ‚
                     }
                     else if (areaController._onWall == true)
                     {
-
+                        //”j‰ó‚·‚é‚©‚à
                     }
                     else
                     {

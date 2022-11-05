@@ -85,7 +85,7 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _areas = new GameObject[_x, _z];
+        _areas = new GameObject[_x, _z + 1];
 
         _areaSize = _x / _areaNum; //•ªŠ„‚·‚é‘å‚«‚³‚ðŒˆ‚ß‚é
 
@@ -298,7 +298,7 @@ public class MapManager : MonoBehaviour
     {
         for (var x = 0; x < _x; x++)
         {
-            for (var z = 0; z < _z; z++)
+            for (var z = 0; z <= _z; z++)
             {
                 if (_areas[x, z] == null)
                 {

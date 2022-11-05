@@ -10,7 +10,6 @@ public enum EMove
 
 public class EnemyMove : MonoBehaviour
 {
-    Rigidbody _rd;
     /// <summary></summary>
     [SerializeField] int _count;
     /// <summary></summary>
@@ -29,174 +28,90 @@ public class EnemyMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _rd = this.GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (RizumuController._eMoveFlag == true)
+
+    }
+
+    public void MoveEnemy()
+    {
+        //タイプによって動きを変える
+        if (_eMove == EMove.MoveA)
         {
-            //タイプによって動きを変える
-            if (_eMove == EMove.MoveA)
-            {
-                MoveA();
-            }
+            MoveA();
         }
     }
 
     void MoveA()
     {
-        if (_change == false)
+        if (_change == false && _count == 0 || _change == true && _count != 0)//反転がfalse且つcountが0だったらor反転していて且つcountが0じゃなったら
         {
-            if (_count == 0)
-            {
-                //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-                areaController = MapManager._areas[_pointX + 1, _pointZ].GetComponent<AreaController>();
+            //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
+            areaController = MapManager._areas[_pointX + 1, _pointZ].GetComponent<AreaController>();
 
-                //移動先の情報によって行動を決める
-                if (areaController._onWall == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onEnemy == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onPlayer == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else
-                {
-                    areaController._onEnemy = true;
-                    areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
-                    areaController._onEnemy = false;
-                    this.transform.position = new Vector3(MapManager._areas[_pointX + 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
-                    _pointX = _pointX + 1;
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
+            //移動先の情報によって行動を決める
+            if (areaController._onWall == true)
+            {
+                //反対に移動するかもしれない
+            }
+            else if (areaController._onEnemy == true) { }
+            else if (areaController._onPlayer == true)
+            {
+                //攻撃をする
             }
             else
             {
-                //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-                areaController = MapManager._areas[_pointX - 1, _pointZ].GetComponent<AreaController>();
-
-                //移動先の情報によって行動を決める
-                if (areaController._onWall == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onEnemy == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onPlayer == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else
-                {
-                    areaController._onEnemy = true;
-                    areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
-                    areaController._onEnemy = false;
-                    this.transform.position = new Vector3(MapManager._areas[_pointX - 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
-                    _pointX = _pointX - 1;
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-            }
-
-            _count++;
-
-            if (_count == 2)
-            {
-                _count = 0;
-                _change = true;
+                areaController._onEnemy = true;
+                areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
+                areaController._onEnemy = false;
+                this.transform.position = new Vector3(MapManager._areas[_pointX + 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
+                _pointX = _pointX + 1;
             }
         }
-        else
+        else if (_change == false && _count != 0 || _change == true && _count == 0) //反転がfalse且つcountが0じゃなかったらor反転していて且つcountが0だったら
         {
-            if (_count == 0)
-            {
-                //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-                areaController = MapManager._areas[_pointX - 1, _pointZ].GetComponent<AreaController>();
+            //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
+            areaController = MapManager._areas[_pointX - 1, _pointZ].GetComponent<AreaController>();
 
-                //移動先の情報によって行動を決める
-                if (areaController._onWall == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onEnemy == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onPlayer == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else
-                {
-                    areaController._onEnemy = true;
-                    areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
-                    areaController._onEnemy = false;
-                    this.transform.position = new Vector3(MapManager._areas[_pointX - 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
-                    _pointX = _pointX - 1;
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
+            //移動先の情報によって行動を決める
+            if (areaController._onWall == true)
+            {
+
+            }
+            else if (areaController._onEnemy == true) { }
+            else if (areaController._onPlayer == true)
+            {
+                //プレイヤーに攻撃する
             }
             else
             {
-                //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-                areaController = MapManager._areas[_pointX + 1, _pointZ].GetComponent<AreaController>();
-
-                //移動先の情報によって行動を決める
-                if (areaController._onWall == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onEnemy == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else if (areaController._onPlayer == true)
-                {
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
-                else
-                {
-                    areaController._onEnemy = true;
-                    areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
-                    areaController._onEnemy = false;
-                    this.transform.position = new Vector3(MapManager._areas[_pointX + 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
-                    _pointX = _pointX + 1;
-                    RizumuController._eMoveFlag = false;
-                    RizumuController._moveFlag = false;
-                }
+                areaController._onEnemy = true;
+                areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
+                areaController._onEnemy = false;
+                this.transform.position = new Vector3(MapManager._areas[_pointX - 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
+                _pointX = _pointX - 1;
             }
+        }
 
-            _count++;
+        _count++;
 
-            if (_count == 2)
+        if (_count == 2)
+        {
+            _count = 0;
+            if(_change == false)
             {
-                _count = 0;
+                _change = true;
+            }
+            else
+            {
                 _change = false;
             }
         }
+
     }
 
     private void OnCollisionEnter(Collision collision)

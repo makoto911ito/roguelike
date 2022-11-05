@@ -10,11 +10,8 @@ public class SponEnemy : MonoBehaviour
     /// <summary>配列の二つ目の要素の場所をランダムで見るための変数</summary>
     int _randomNumZ;
 
-    /// <summary>スポーンできたかどうかのフラグ</summary>
-    bool _spon;
-
-    /// <summary>プレイヤーのオブジェクトを取得</summary>
-    [SerializeField] GameObject[] _enemy;
+    /// <summary>敵のオブジェクトを配列に保存するための変数</summary>
+    [SerializeField] GameObject[] _enemys;
 
     /// <summary>スポーンさせる敵の合計数</summary>
     [SerializeField] int _sponEnemyNum;
@@ -22,14 +19,17 @@ public class SponEnemy : MonoBehaviour
     /// <summary>スポーンさせる敵キャラをランダムで選ぶための変数</summary>
     int _randoEnemyNum;
 
-    /// <summary>移動先・前を確認、変更するためのAreaControllerスクリプトを獲得する変数</summary>
+    /// <summary>エリア情報を取得するためのAreaControllerスクリプトを獲得する変数</summary>
     AreaController areaController;
+
+    /// <summary>ゲームマネージャーを取得するための変数</summary>
+    [SerializeField] EnemyManager _enemyManager = null;
 
     public void Spon()
     {
         for (var i = 0; i < _sponEnemyNum; i++)
         {
-            _randoEnemyNum = Random.Range(0, _enemy.Length);
+            _randoEnemyNum = Random.Range(0, _enemys.Length);
             _randomNumX = Random.Range(0, MapManager._x);
             _randomNumZ = Random.Range(0, MapManager._z);
 
@@ -45,14 +45,14 @@ public class SponEnemy : MonoBehaviour
 
                 if (areaController._onEnemy == true || areaController._onWall == true || areaController._onPlayer == true)
                 {
-                    Debug.Log("プレイヤーは生成されなかった。");
                     i -= 1;
                     continue;
                 }
                 else
                 {
                     Debug.Log("敵キャラが生成された");
-                    Instantiate(_enemy[_randoEnemyNum], new Vector3(MapManager._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, MapManager._areas[_randomNumX, _randomNumZ].transform.position.z), Quaternion.identity);
+                    GameObject _enemy = Instantiate(_enemys[_randoEnemyNum], new Vector3(MapManager._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, MapManager._areas[_randomNumX, _randomNumZ].transform.position.z), Quaternion.identity);
+                    _enemyManager.Enemy(_enemy);
 
                 }
             }
