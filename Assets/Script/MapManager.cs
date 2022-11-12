@@ -216,7 +216,6 @@ public class MapManager : MonoBehaviour
                         _areas[miti, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
                     }
                 }
-
             }
 
             //‘O‰ñ‚ÌÅ‘å•‚©‚ç¡‰ñ‚ÌƒGƒŠƒA‚Ìˆê”ÔÅ‰‚É¶¬‚³‚ê‚½‚Ì—ñ‚É‚Æ‚±‚ë‚Ü‚Å“¹‚ğì‚é
