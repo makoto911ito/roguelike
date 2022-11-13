@@ -21,11 +21,11 @@ public class CreateMap : MonoBehaviour
     int _areaSize = 0; //マップを区切るサイズ
     int _randomPosX = 0;//区切った区画で生成する部屋の横幅の中心点
     int _randomPosZ = 0;//区切った区画で生成する部屋の縦幅の中心点
-    int _randomNum = 0;
-    int _count = 0;
-    int _keepBackSide = 0;
-    int _keepFrontSide = 0;
-    int _keepPosZ = 0;
+    int _randomMapSize = 0;//生成する部屋の大きさ
+    int _count = 0;// 何回目のオブジェクト生成か管理する変数
+    int _keepBackSide = 0;//生成した部屋の一番最後にあるオブジェクトのx座標を管理する変数
+    int _keepFrontSide = 0;//生成した部屋の一番最初にあるオブジェクトのx座標を管理する変数
+    int _keepPosZ = 0;//生成した部屋のZ座標を管理する変数
 
     // Start is called before the first frame update
     void Start()
@@ -57,11 +57,11 @@ public class CreateMap : MonoBehaviour
 
             _randomPosZ = Random.Range(1, _z);//縦幅の中心を決めている
 
-            _randomNum = Random.Range(_mapSizeMin, _mapSizeMax); //部屋の大きさを決めている
+            _randomMapSize = Random.Range(_mapSizeMin, _mapSizeMax); //部屋の大きさを決めている
 
-            for (int x = _randomPosX - _randomNum; x < _randomPosX + _randomNum; x++)
+            for (int x = _randomPosX - _randomMapSize; x < _randomPosX + _randomMapSize; x++)
             {
-                for (int z = _randomPosZ - _randomNum; z < _randomPosZ + _randomNum; z++)
+                for (int z = _randomPosZ - _randomMapSize; z < _randomPosZ + _randomMapSize; z++)
                 {
                     if (x > 0 && x < keepMaxArea - 1)
                     {
