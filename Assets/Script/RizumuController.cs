@@ -14,7 +14,7 @@ public class RizumuController : MonoBehaviour
     static public bool _moveFlag = false;
 
     /// <summary>“G‚ğ“®‚©‚·ŠÖ”‚ğŒÄ‚Ô‚½‚ß‚Émanager‚ğæ“¾</summary>
-    [SerializeField] EnemyManager _enemyManager = null;
+    [SerializeField] EnemyList _enemyList = null;
 
     public Text _text;
 
@@ -40,9 +40,9 @@ public class RizumuController : MonoBehaviour
 
             if (_time > _keisoku + _pTaim) //“ü—Í‚Ìƒ‰ƒO‚ğl—¶‚µ‚Ä’x‚ç‚¹‚Ä‚¢‚é
             {
-                _enemyManager.GoEnemyMove();
+                _enemyList.GoEnemyMove();
                 _time = 0;
-                PMove._buttonDown = false;
+                PlayerMove._buttonDown = false;
             }
         }
         else
