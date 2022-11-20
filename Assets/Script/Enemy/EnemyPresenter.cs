@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class EnemyPresenter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    EnemyModel _enemyModel = null;
+
+    [SerializeField] EnemyView _enemyView = null;
+
+    [SerializeField] int _enemyHp = 1;
+
+    public void Init()
     {
-        
+        _enemyModel = new EnemyModel(
+            _enemyHp,
+            x =>
+            {
+                _enemyView.ChangeSliderValue(_enemyHp, x);
+            },
+            _enemyView.gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Damage(int pPower)
     {
-        
+        _enemyModel.Damage(pPower);
     }
 }

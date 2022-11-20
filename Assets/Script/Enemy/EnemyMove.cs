@@ -15,32 +15,20 @@ public class EnemyMove : MonoBehaviour
     /// <summary></summary>
     [SerializeField] bool _change;
     /// <summary>タイプによって動きを変えるそのタイプを管理する変数</summary>
-    [SerializeField] EMove _eMove = EMove.MoveA;
+    [SerializeField] int _eMove = 0;
     /// <summary>プレイヤーのオブジェクトを取得</summary>
     [SerializeField] GameObject _player;
     /// <summary>スポーンしたＸ座標を取得するための変数</summary>
-    int _pointX;
+    public int _pointX;
     /// <summary>スポーンしたＺ座標を取得するための変数</summary>
-    int _pointZ;
+    public int _pointZ;
 
     AreaController areaController;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void MoveEnemy()
     {
         //タイプによって動きを変える
-        if (_eMove == EMove.MoveA)
+        if (_eMove == (int)EMove.MoveA)
         {
             MoveA();
         }

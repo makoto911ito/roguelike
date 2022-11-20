@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] Slider _slider = null; 
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeSliderValue(int maxHp, int currentHp)
     {
-        
+        _slider.maxValue = maxHp;
+        _slider.value = currentHp;
     }
 }
