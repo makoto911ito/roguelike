@@ -12,16 +12,16 @@ public class PlayerModel
     /// <summary>プレイヤーの攻撃力</summary>
     public int _pPower = 1;
 
-    public PlayerModel(int maxHp,int pPower, System.Action<int> action, GameObject gameObject)
+    public PlayerModel(int maxHp, System.Action<int> action, GameObject gameObject)
     {
         _maxHp = maxHp;
-        _pPower = pPower;
         _playerHpProperty = new ReactiveProperty<int>(maxHp);
         _playerHpProperty.Subscribe(action).AddTo(gameObject);
     }
 
     public void Damage(int damage)
     {
+        Debug.Log("計算中");
         _playerHpProperty.Value -= damage;
     }
 }

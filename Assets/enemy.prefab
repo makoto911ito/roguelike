@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 63553198814917973}
   - component: {fileID: 2005559684888861456}
   - component: {fileID: 829886742102841029}
+  - component: {fileID: -3882373707906386225}
+  - component: {fileID: -8634931368633025566}
   - component: {fileID: 6593376753463538381}
   m_Layer: 0
   m_Name: enemy
@@ -115,6 +117,36 @@ MonoBehaviour:
   _change: 0
   _eMove: 0
   _player: {fileID: 8568976248572084914, guid: 9128e15db1deb044694036d11ff80bfa, type: 3}
+  _pointX: 0
+  _pointZ: 0
+  _enemyPresenter: {fileID: -3882373707906386225}
+--- !u!114 &-3882373707906386225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633517592270577836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a760f7d5dacde409550c2cc542981c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyView: {fileID: -8634931368633025566}
+  _enemyHp: 1
+--- !u!114 &-8634931368633025566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633517592270577836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee74a46ee48f6814b9959520f4f8c9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 497548646216703839, guid: d1229744823a47342b79c5a73ebbab41, type: 3}
 --- !u!54 &6593376753463538381
 Rigidbody:
   m_ObjectHideFlags: 0

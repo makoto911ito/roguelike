@@ -15,8 +15,9 @@ public class PlayerMove : MonoBehaviour
     /// <summary>現在地のｚ軸</summary>
     int _pointZ = 0;
 
-    /// <summary>敵のリストを取得</summary>
-    [SerializeField] EnemyList _enemyList = null;
+    EnemyList _EnemyList;
+
+    RizumuController _rizumuController;
 
     [SerializeField] PlayerPresenter _playerPresenter = null;
 
@@ -27,6 +28,15 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         _playerPresenter.Init();
+
+
+        var enemyList = GameObject.Find("EnemyList");
+
+        _EnemyList = enemyList.GetComponent<EnemyList>();
+
+        var rizumuController = GameObject.Find("RizumuController");
+
+        _rizumuController = rizumuController.GetComponent<RizumuController>();
     }
 
     // Update is called once per frame
@@ -45,7 +55,7 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetButtonDown("Horizontal"))
         {
-            if (RizumuController._moveFlag == true && _buttonDown == false)
+            if (_rizumuController._moveFlag == true && _rizumuController._bottu == false)
             {
                 if (velox > 0)
                 {
@@ -59,7 +69,9 @@ public class PlayerMove : MonoBehaviour
                     }
                     else if (areaController._onEnemy == true)
                     {
-                        _playerPresenter.Attack(_pointX, _pointZ);
+                        Debug.Log("攻撃");
+                        _EnemyList.CheckEnemy(_pointX + 1, _pointZ, 1);
+                        //_playerPresenter.Attack(_pointX + 1, _pointZ);
                     }
                     else
                     {
@@ -68,7 +80,7 @@ public class PlayerMove : MonoBehaviour
                         areaController._onPlayer = false;
                         this.transform.position = new Vector3(MapManager._areas[_pointX + 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
                         _pointX = _pointX + 1;
-                        _buttonDown = true;
+                        _rizumuController._bottu = true;
                     }
 
                     //this.transform.position = new Vector3(MapManager._areas[_pointX + 1, _pointZ].transform.position.x, MapManager._areas[_pointX + 1, _pointZ].transform.position.y, MapManager._areas[_pointX + 1, _pointZ].transform.position.z);
@@ -84,7 +96,9 @@ public class PlayerMove : MonoBehaviour
                     }
                     else if (areaController._onEnemy == true)
                     {
-
+                        Debug.Log("攻撃");
+                        _EnemyList.CheckEnemy(_pointX - 1, _pointZ, 1);
+                        //_playerPresenter.Attack(_pointX - 1, _pointZ);
                     }
                     else
                     {
@@ -93,21 +107,21 @@ public class PlayerMove : MonoBehaviour
                         areaController._onPlayer = false;
                         this.transform.position = new Vector3(MapManager._areas[_pointX - 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
                         _pointX = _pointX - 1;
-                        _buttonDown = true;
+                        _rizumuController._bottu = true;
                     }
                 }
             }
             else
             {
                 Debug.Log("MISS");
-                _buttonDown = true;
+                _rizumuController._bottu = true;
             }
 
         }
 
         if (Input.GetButtonDown("Vertical"))
         {
-            if (RizumuController._moveFlag == true && _buttonDown == false)
+            if (_rizumuController._moveFlag == true && _rizumuController._bottu == false)
             {
                 if (vertical > 0)
                 {
@@ -118,6 +132,9 @@ public class PlayerMove : MonoBehaviour
                     if (areaController._onEnemy == true)
                     {
                         //攻撃
+                        Debug.Log("攻撃");
+                        _EnemyList.CheckEnemy(_pointX, _pointZ + 1, 1);
+                        //_playerPresenter.Attack(_pointX, _pointZ + 1);
                     }
                     else if (areaController._onWall == true)
                     {
@@ -130,7 +147,7 @@ public class PlayerMove : MonoBehaviour
                         areaController._onPlayer = false;
                         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, MapManager._areas[_pointX, _pointZ + 1].transform.position.z);
                         _pointZ = _pointZ + 1;
-                        _buttonDown = true;
+                        _rizumuController._bottu = true;
                     }
 
                 }
@@ -142,7 +159,9 @@ public class PlayerMove : MonoBehaviour
                     //移動先の情報によって行動を決める
                     if (areaController._onEnemy == true)
                     {
-
+                        Debug.Log("攻撃");
+                        _EnemyList.CheckEnemy(_pointX, _pointZ- 1, 1);
+                        //_playerPresenter.Attack(_pointX, _pointZ - 1);
                     }
                     else if (areaController._onWall == true)
                     {
@@ -155,7 +174,7 @@ public class PlayerMove : MonoBehaviour
                         areaController._onPlayer = false;
                         this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, MapManager._areas[_pointX, _pointZ - 1].transform.position.z);
                         _pointZ = _pointZ - 1;
-                        _buttonDown = true;
+                        _rizumuController._bottu = true;
                     }
 
                 }
@@ -163,14 +182,13 @@ public class PlayerMove : MonoBehaviour
             else
             {
                 Debug.Log("MISS");
-                _buttonDown = true;
+                _rizumuController._bottu = true;
             }
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-
         for (int x = 0; x < MapManager._x; x++)
         {
             for (int z = 0; z < MapManager._z; z++)
@@ -180,7 +198,7 @@ public class PlayerMove : MonoBehaviour
                     //現在のプレイヤーの位置を調べる
                     _pointX = x;
                     _pointZ = z;
-                    Debug.Log("現在の配列番号" + _pointX + " , " + _pointZ);
+                    //Debug.Log("現在の配列番号" + _pointX + " , " + _pointZ);
                 }
             }
         }

@@ -6,6 +6,7 @@ public class PlayerPresenter : MonoBehaviour
 {
     /// <summary>プレイヤーのデータに関してのクラス</summary>
     PlayerModel _playerModel = null;
+
     /// <summary>プレイヤーの表示に関してのクラス</summary>
     [SerializeField] PlayerView _playerView = null;
 
@@ -14,24 +15,40 @@ public class PlayerPresenter : MonoBehaviour
     /// <summary>プレイヤーのHP</summary>
     [SerializeField] int _playerHp = 1;
     /// <summary>プレイヤーの攻撃力</summary>
-    [SerializeField] int _pPower = 1;
+    //[SerializeField] int _pPower = 1;
 
     public void Init()
     {
+
         _playerModel = new PlayerModel(
             _playerHp,
-            _pPower,
             x =>
             {
                 _playerView.ChangeSliderValue(_playerHp, x);
+                if(x <= 0)
+                {
+                    Destroy(this.gameObject);
+                }
             },
-            gameObject);
+            _playerView.gameObject);
+
+
     }
 
+    //public void Attack(int posx, int posz)
+    //{
+    //    _enemyList.CheckEnemy(posx, posz, _playerModel._pPower);
+    //}
 
-
-    public void Attack(int posx, int posz)
+    public void Damage(int ePower)
     {
-        _enemyList.CheckEnemy(posx, posz,_playerModel._pPower);
+        if (_playerModel == null)
+        {
+            Debug.Log("PlayerModelはnullです");
+        }
+
+        Debug.Log("敵からダメージを食らっている");
+        _playerModel.Damage(ePower);
+
     }
 }

@@ -90,7 +90,7 @@ public class MapManager : MonoBehaviour
         _areaSize = _x / _areaNum; //分割する大きさを決める
 
         _zLine = Random.Range(_minZLine, _z);// 横の区切りの位置を決める
-        Debug.Log(_zLine + " 横区切りの値");
+        //Debug.Log(_zLine + " 横区切りの値");
 
         for (int i = 0; i < _areaNum; i++)　//マップの生成
         {
@@ -105,22 +105,22 @@ public class MapManager : MonoBehaviour
             else if (i == _areaNum - 1) //最後の区画の場合
             {
                 keepMaxArea = _x - 1;
-                Debug.Log(_keepMinAreaSize + "前回の最大の幅");
-                Debug.Log(keepMaxArea + "　今回の最大の幅");
+                //Debug.Log(_keepMinAreaSize + "前回の最大の幅");
+                //Debug.Log(keepMaxArea + "　今回の最大の幅");
                 _randomPosX = Random.Range(_keepMinAreaSize, keepMaxArea);
                 //Debug.Log(_randomPosX + "　最後の中心点");
             }
             else // 間の区画
             {
                 keepMaxArea += _areaSize;
-                Debug.Log(_keepMinAreaSize + "前回の最大の幅");
-                Debug.Log(keepMaxArea + "　今回の最大の幅");
+                //Debug.Log(_keepMinAreaSize + "前回の最大の幅");
+                //Debug.Log(keepMaxArea + "　今回の最大の幅");
                 _randomPosX = Random.Range(_keepMinAreaSize, keepMaxArea);
                 //Debug.Log(_randomPosX + "　今回の中心点");
             }
 
             _randomNum = Random.Range(_mapMin, _mapMax);　//部屋の大きさを決めている
-            Debug.Log("エリアの大きさ" + _randomNum);
+            //Debug.Log("エリアの大きさ" + _randomNum);
 
             // Z座標をランダムで決める
             _areaUnderPointZ = Random.Range(1, _zLine - 1);// z座標１の所からz座標の区切った場所までの間で決める
@@ -195,7 +195,7 @@ public class MapManager : MonoBehaviour
             }
 
             _count = 0;//ここでカウントをリセット
-            Debug.Log(_keepBackSide + "エリア最後尾の位置");
+            //Debug.Log(_keepBackSide + "エリア最後尾の位置");
 
             //生成したエリアの最後尾のマスから今回の最大幅まで道をつなげる
             if (i != _areaNum - 1)
@@ -204,7 +204,7 @@ public class MapManager : MonoBehaviour
                 {
                     for (int miti = _keepBackSide + 1; miti <= keepMaxArea; miti++)
                     {
-                        Debug.Log("動いた");
+                        //Debug.Log("動いた");
                         _areas[miti, _areaUpPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
                     }
                 }
@@ -212,7 +212,7 @@ public class MapManager : MonoBehaviour
                 {
                     for (int miti = _keepBackSide + 1; miti <= keepMaxArea; miti++)
                     {
-                        Debug.Log("動いた");
+                        //Debug.Log("動いた");
                         _areas[miti, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
                     }
                 }
@@ -285,11 +285,13 @@ public class MapManager : MonoBehaviour
         //歩けない場所を壁で埋める
         WallCreate();
 
+        //プレイヤーをスポーンさせる
+        _sponPlayer.Spon();
+
         //敵キャラをスポーンさせる
         _sponEnemy.Spon();
 
-        //プレイヤーをスポーンさせる
-        _sponPlayer.Spon();
+
 
     }
 

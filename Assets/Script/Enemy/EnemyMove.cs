@@ -16,14 +16,32 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] bool _change;
     /// <summary>タイプによって動きを変えるそのタイプを管理する変数</summary>
     [SerializeField] int _eMove = 0;
-    /// <summary>プレイヤーのオブジェクトを取得</summary>
-    [SerializeField] GameObject _player;
     /// <summary>スポーンしたＸ座標を取得するための変数</summary>
     public int _pointX;
     /// <summary>スポーンしたＺ座標を取得するための変数</summary>
     public int _pointZ;
 
     AreaController areaController;
+
+    PlayerPresenter _playerPresenter;
+
+    [SerializeField] EnemyPresenter _enemyPresenter = null;
+
+    private void Start()
+    {
+
+        var gameObject = GameObject.Find("player(Clone)");
+
+        if (gameObject == null)
+        {
+            Debug.Log("プレイヤーを取得できませんでした");
+        }
+
+        _playerPresenter = gameObject.GetComponent<PlayerPresenter>();
+
+        _enemyPresenter.GetLisut();
+        _enemyPresenter.Init();
+    }
 
     public void MoveEnemy()
     {
@@ -50,6 +68,7 @@ public class EnemyMove : MonoBehaviour
             else if (areaController._onPlayer == true)
             {
                 //攻撃をする
+                _playerPresenter.Damage(1);
             }
             else
             {
@@ -74,6 +93,7 @@ public class EnemyMove : MonoBehaviour
             else if (areaController._onPlayer == true)
             {
                 //プレイヤーに攻撃する
+                _playerPresenter.Damage(1);
             }
             else
             {
@@ -90,7 +110,7 @@ public class EnemyMove : MonoBehaviour
         if (_count == 2)
         {
             _count = 0;
-            if(_change == false)
+            if (_change == false)
             {
                 _change = true;
             }
@@ -100,6 +120,13 @@ public class EnemyMove : MonoBehaviour
             }
         }
 
+    }
+
+    public void DeleteEnemy()
+    {
+        areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
+        areaController._onEnemy = false;
+        Destroy(this.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -114,7 +141,7 @@ public class EnemyMove : MonoBehaviour
                     //現在の位置を調べる
                     _pointX = x;
                     _pointZ = z;
-                    Debug.Log("現在の配列番号" + _pointX + " , " + _pointZ);
+                    //Debug.Log("現在の配列番号" + _pointX + " , " + _pointZ);
                 }
             }
         }

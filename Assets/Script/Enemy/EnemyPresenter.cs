@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class EnemyPresenter : MonoBehaviour
 {
+    /// <summary>エネミーのデータに関してのクラス</summary>
     EnemyModel _enemyModel = null;
 
+    /// <summary>エネミーの表示に関してのクラス</summary>
     [SerializeField] EnemyView _enemyView = null;
 
     [SerializeField] int _enemyHp = 1;
+
+    EnemyList _enemyList = null;
+
+    public void GetLisut()
+    {
+        var gameObject = GameObject.Find("EnemyList");
+
+        _enemyList = gameObject.GetComponent<EnemyList>();
+    }
 
     public void Init()
     {
@@ -17,12 +28,24 @@ public class EnemyPresenter : MonoBehaviour
             x =>
             {
                 _enemyView.ChangeSliderValue(_enemyHp, x);
+                if(x == 0)
+                {
+                    _enemyList.EnemyDestroy(this.gameObject);
+                }
             },
             _enemyView.gameObject);
+
+
     }
 
     public void Damage(int pPower)
     {
+        if (_enemyModel == null)
+        {
+            Debug.Log("EnemyModelはnullです");
+        }
+
+        Debug.Log("ダメージ与えている");
         _enemyModel.Damage(pPower);
     }
 }

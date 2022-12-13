@@ -11,7 +11,9 @@ public class RizumuController : MonoBehaviour
     public float _keisoku = 1;
 
     /// <summary>プレイヤーが動けるかどうか判定するフラグ</summary>
-    static public bool _moveFlag = false;
+    public bool _moveFlag = false;
+
+    public bool _bottu = false;
 
     /// <summary>敵を動かす関数を呼ぶためにmanagerを取得</summary>
     [SerializeField] EnemyList _enemyList = null;
@@ -42,12 +44,13 @@ public class RizumuController : MonoBehaviour
             {
                 _enemyList.GoEnemyMove();
                 _time = 0;
-                PlayerMove._buttonDown = false;
+                //PlayerMove._buttonDown = false;
+                _bottu = false;
             }
         }
         else
         {
-
+            _moveFlag = false;
         }
     }
 }
