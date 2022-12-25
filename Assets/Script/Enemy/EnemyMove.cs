@@ -4,9 +4,25 @@ using UnityEngine;
 
 public enum EMove
 {
-    MoveA = 0,
+    A,
+    B
 }
 
+abstract class X
+{
+    public abstract void Move();
+}
+
+//動きのコードは別スクリプトに新しく書く
+//アブストラクトクラス（ｘ（仮））を継承する
+
+class B : X
+{
+    public override void Move()
+    {
+
+    }
+}
 
 public class EnemyMove : MonoBehaviour
 {
@@ -14,24 +30,47 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] int _count;
     /// <summary></summary>
     [SerializeField] bool _change;
-    /// <summary>タイプによって動きを変えるそのタイプを管理する変数</summary>
-    [SerializeField] int _eMove = 0;
     /// <summary>スポーンしたＸ座標を取得するための変数</summary>
     public int _pointX;
     /// <summary>スポーンしたＺ座標を取得するための変数</summary>
     public int _pointZ;
 
-    AreaController areaController;
-
+    /// <summary>プレイヤー仕様のプレゼンターを取得するための変数</summary>
     PlayerPresenter _playerPresenter;
 
+    /// <summary>敵仕様のプレゼンターを参照するための変数</summary>
     [SerializeField] EnemyPresenter _enemyPresenter = null;
+
+    /// <summary>敵の移動種類を管理しているオブジェクトを参照するための変数</summary>
+    [SerializeField] GameObject _moveType;
+
+
+    //ここで行動の変化を管理する
+    private X _x;
+    public EMove EMove
+    {
+        get { return _eMove; }
+        set
+        {
+            switch (value)
+            {
+                case EMove.A:
+                    _x = new EnemyTypeA(this, _playerPresenter);
+                    break;
+                case EMove.B:
+                    _x = new B();
+                    break;
+            }
+            _eMove = value;
+        }
+    }
+    /// <summary>タイプによって動きを変えるそのタイプを管理する変数</summary>
+    [SerializeField] EMove _eMove = EMove.A;
 
     private void Start()
     {
-
+        //プレイヤーの情報を取得
         var gameObject = GameObject.Find("player(Clone)");
-
         if (gameObject == null)
         {
             Debug.Log("プレイヤーを取得できませんでした");
@@ -41,97 +80,32 @@ public class EnemyMove : MonoBehaviour
 
         _enemyPresenter.GetLisut();
         _enemyPresenter.Init();
+
+        EMove = _eMove;
     }
 
     public void MoveEnemy()
     {
-        //タイプによって動きを変える
-        if (_eMove == (int)EMove.MoveA)
-        {
-            MoveA();
-        }
+        //敵を動かす
+        _x.Move();
     }
 
-    void MoveA()
+    public void Attack()
     {
-        if (_change == false && _count == 0 || _change == true && _count != 0)//反転がfalse且つcountが0だったらor反転していて且つcountが0じゃなったら
-        {
-            //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-            areaController = MapManager._areas[_pointX + 1, _pointZ].GetComponent<AreaController>();
-
-            //移動先の情報によって行動を決める
-            if (areaController._onWall == true)
-            {
-                //反対に移動するかもしれない
-            }
-            else if (areaController._onEnemy == true) { }
-            else if (areaController._onPlayer == true)
-            {
-                //攻撃をする
-                _playerPresenter.Damage(1);
-            }
-            else
-            {
-                areaController._onEnemy = true;
-                areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
-                areaController._onEnemy = false;
-                this.transform.position = new Vector3(MapManager._areas[_pointX + 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
-                _pointX = _pointX + 1;
-            }
-        }
-        else if (_change == false && _count != 0 || _change == true && _count == 0) //反転がfalse且つcountが0じゃなかったらor反転していて且つcountが0だったら
-        {
-            //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-            areaController = MapManager._areas[_pointX - 1, _pointZ].GetComponent<AreaController>();
-
-            //移動先の情報によって行動を決める
-            if (areaController._onWall == true)
-            {
-
-            }
-            else if (areaController._onEnemy == true) { }
-            else if (areaController._onPlayer == true)
-            {
-                //プレイヤーに攻撃する
-                _playerPresenter.Damage(1);
-            }
-            else
-            {
-                areaController._onEnemy = true;
-                areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
-                areaController._onEnemy = false;
-                this.transform.position = new Vector3(MapManager._areas[_pointX - 1, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
-                _pointX = _pointX - 1;
-            }
-        }
-
-        _count++;
-
-        if (_count == 2)
-        {
-            _count = 0;
-            if (_change == false)
-            {
-                _change = true;
-            }
-            else
-            {
-                _change = false;
-            }
-        }
-
+        //攻撃をする
+        _playerPresenter.Damage(1);
     }
+
 
     public void DeleteEnemy()
     {
-        areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
+        var areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
         areaController._onEnemy = false;
         Destroy(this.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-
         for (int x = 0; x < MapManager._x; x++)
         {
             for (int z = 0; z < MapManager._z; z++)

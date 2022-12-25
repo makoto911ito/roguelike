@@ -116,10 +116,10 @@ MonoBehaviour:
   _count: 0
   _change: 0
   _eMove: 0
-  _player: {fileID: 8568976248572084914, guid: 9128e15db1deb044694036d11ff80bfa, type: 3}
   _pointX: 0
   _pointZ: 0
   _enemyPresenter: {fileID: -3882373707906386225}
+  _moveType: {fileID: 5030931841946466766, guid: a16db50de220c5f4a8b37c640b123dad, type: 3}
 --- !u!114 &-3882373707906386225
 MonoBehaviour:
   m_ObjectHideFlags: 0
