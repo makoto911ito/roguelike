@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class EnemyTypeA : X
+class EnemyTypeA : MoveType
 {
     /// <summary></summary>
     private int _count;

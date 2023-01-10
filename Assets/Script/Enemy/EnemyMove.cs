@@ -8,7 +8,7 @@ public enum EMove
     B
 }
 
-abstract class X
+abstract class MoveType
 {
     public abstract void Move();
 }
@@ -16,7 +16,7 @@ abstract class X
 //動きのコードは別スクリプトに新しく書く
 //アブストラクトクラス（ｘ（仮））を継承する
 
-class B : X
+class B : MoveType
 {
     public override void Move()
     {
@@ -46,7 +46,7 @@ public class EnemyMove : MonoBehaviour
 
 
     //ここで行動の変化を管理する
-    private X _x;
+    private MoveType _x;
     public EMove EMove
     {
         get { return _eMove; }
