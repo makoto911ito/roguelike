@@ -13,17 +13,6 @@ abstract class MoveType
     public abstract void Move();
 }
 
-//動きのコードは別スクリプトに新しく書く
-//アブストラクトクラス（ｘ（仮））を継承する
-
-class B : MoveType
-{
-    public override void Move()
-    {
-
-    }
-}
-
 public class EnemyMove : MonoBehaviour
 {
     /// <summary></summary>
@@ -41,12 +30,8 @@ public class EnemyMove : MonoBehaviour
     /// <summary>敵仕様のプレゼンターを参照するための変数</summary>
     [SerializeField] EnemyPresenter _enemyPresenter = null;
 
-    /// <summary>敵の移動種類を管理しているオブジェクトを参照するための変数</summary>
-    [SerializeField] GameObject _moveType;
-
-
     //ここで行動の変化を管理する
-    private MoveType _x;
+    private MoveType _moveType;
     public EMove EMove
     {
         get { return _eMove; }
@@ -55,10 +40,7 @@ public class EnemyMove : MonoBehaviour
             switch (value)
             {
                 case EMove.A:
-                    _x = new EnemyTypeA(this, _playerPresenter);
-                    break;
-                case EMove.B:
-                    _x = new B();
+                    _moveType = new EnemyTypeA(this, _playerPresenter);
                     break;
             }
             _eMove = value;
@@ -87,7 +69,7 @@ public class EnemyMove : MonoBehaviour
     public void MoveEnemy()
     {
         //敵を動かす
-        _x.Move();
+        _moveType.Move();
     }
 
     public void Attack()
