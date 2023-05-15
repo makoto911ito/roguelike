@@ -56,9 +56,6 @@ public class MapManager : MonoBehaviour
     /// <summary>生成したエリアの中心（ｚ座標）</summary>
     int _center = 0;
 
-    ///// <summary>各エリアの左端</summary>
-    //int _keepSide = 0;
-
     /// <summary>エリアの大きさ</summary>
     int _randomNum = 0;
 
@@ -82,8 +79,8 @@ public class MapManager : MonoBehaviour
 
     AreaController areaController;
 
-    // Start is called before the first frame update
-    void Start()
+
+    public void MapCreate(GameObject _mapController)
     {
         _areas = new GameObject[_x, _z + 1];
 
@@ -147,6 +144,7 @@ public class MapManager : MonoBehaviour
                                         if (z > _zLine)
                                         {
                                             _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            _areas[x, z].transform.parent = _mapController.transform;
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -177,6 +175,7 @@ public class MapManager : MonoBehaviour
                                         if (z < _zLine)
                                         {
                                             _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            _areas[x, z].transform.parent = _mapController.transform;
                                             _keepBackSide = x;
                                             _count++;
                                         }
@@ -206,6 +205,7 @@ public class MapManager : MonoBehaviour
                     {
                         //Debug.Log("動いた");
                         _areas[miti, _areaUpPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
+                        _areas[miti, _areaUpPointZ].transform.parent = _mapController.transform;
                     }
                 }
                 else
@@ -214,6 +214,7 @@ public class MapManager : MonoBehaviour
                     {
                         //Debug.Log("動いた");
                         _areas[miti, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
+                        _areas[miti, _areaUnderPointZ].transform.parent = _mapController.transform;
                     }
                 }
             }
@@ -226,6 +227,7 @@ public class MapManager : MonoBehaviour
                     for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
                     {
                         _areas[aisle, _areaUpPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUpPointZ), Quaternion.identity);
+                        _areas[aisle, _areaUpPointZ].transform.parent = _mapController.transform;
                     }
 
                     //道をつなげるためのコード
@@ -234,6 +236,7 @@ public class MapManager : MonoBehaviour
                         for (int rodo = _areaUpPointZ + 1; rodo < _center; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
                     else
@@ -241,6 +244,7 @@ public class MapManager : MonoBehaviour
                         for (int rodo = _center + 1; rodo < _areaUpPointZ; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
                 }
@@ -249,6 +253,7 @@ public class MapManager : MonoBehaviour
                     for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
                     {
                         _areas[aisle, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
+                        _areas[aisle, _areaUnderPointZ].transform.parent = _mapController.transform;
                     }
 
                     //道をつなげるためのコード
@@ -257,6 +262,7 @@ public class MapManager : MonoBehaviour
                         for (int rodo = _areaUnderPointZ + 1; rodo < _center; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
                     else
@@ -264,6 +270,7 @@ public class MapManager : MonoBehaviour
                         for (int rodo = _center + 1; rodo < _areaUnderPointZ; rodo++)
                         {
                             _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
                 }
@@ -283,19 +290,26 @@ public class MapManager : MonoBehaviour
         }
 
         //歩けない場所を壁で埋める
-        WallCreate();
-
-        //プレイヤーをスポーンさせる
-        _sponPlayer.Spon();
-
-        //敵キャラをスポーンさせる
-        _sponEnemy.Spon();
+        WallCreate(_mapController);
 
 
+        StartCoroutine("Spawner");
 
     }
 
-    void WallCreate()
+    IEnumerator Spawner()
+    {
+        yield return new WaitForSeconds(1);
+        //プレイヤーをスポーンさせる
+        _sponPlayer.Spon();
+        //敵キャラをスポーンさせる
+        _sponEnemy.Spon();
+        //ボス敵をスポーンさせる
+        _sponEnemy.BossSpon();
+    }
+
+
+    void WallCreate(GameObject _mapController)
     {
         for (var x = 0; x < _x; x++)
         {
@@ -304,6 +318,7 @@ public class MapManager : MonoBehaviour
                 if (_areas[x, z] == null)
                 {
                     _areas[x, z] = Instantiate(_obj[(int)AreaObj.obj2], new Vector3(x, 1, z), Quaternion.identity);
+                    _areas[x, z].transform.parent = _mapController.transform;
                     areaController = MapManager._areas[x, z].GetComponent<AreaController>();
                     areaController._onWall = true;
                 }
@@ -313,5 +328,71 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
+    }
+
+
+
+    static public int _bossMapX = 40;
+    static public int _bossMapZ = 40;
+
+    public void BossMapCreate(GameObject _mapController)
+    {
+        _x = _bossMapX;
+        _z = _bossMapZ;
+
+        _areas = new GameObject[_x + 1, _z + 1];
+
+        for (var x = 1; x < 16; x++)
+        {
+            for(var z = 1; z < _bossMapZ; z++)
+            {
+                if(x >= 12)
+                {
+                    if(z > 17 && z < 23)
+                    {
+                        _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                        _areas[x, z].transform.parent = _mapController.transform;
+                    }
+                }
+                else
+                {
+                    _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                    _areas[x, z].transform.parent = _mapController.transform;
+                }
+
+            }
+        }
+
+        for(var x = 16; x < _bossMapX; x ++)
+        {
+            for(var z = 1; z < _bossMapZ; z++)
+            {
+                _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                _areas[x, z].transform.parent = _mapController.transform;
+            }
+        }
+
+        //壁設置
+        for (var x = 0; x <= _bossMapX; x++)
+        {
+            for (var z = 0; z <= _bossMapZ; z++)
+            {
+                if (_areas[x, z] == null)
+                {
+                    _areas[x, z] = Instantiate(_obj[(int)AreaObj.obj2], new Vector3(x, 1, z), Quaternion.identity);
+                    _areas[x, z].transform.parent = _mapController.transform;
+                    areaController = MapManager._areas[x, z].GetComponent<AreaController>();
+                    areaController._onWall = true;
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+
+        StartCoroutine("Spawner");
+
     }
 }

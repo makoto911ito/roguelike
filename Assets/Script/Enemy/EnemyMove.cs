@@ -5,10 +5,10 @@ using UnityEngine;
 public enum EMove
 {
     A,
-    B
+    B,
 }
 
-abstract class MoveType
+abstract class MoveBase
 {
     public abstract void Move();
 }
@@ -30,8 +30,12 @@ public class EnemyMove : MonoBehaviour
     /// <summary>敵仕様のプレゼンターを参照するための変数</summary>
     [SerializeField] EnemyPresenter _enemyPresenter = null;
 
+    public bool _canMove = false;
+
+    GameManager _gameManager;
+
     //ここで行動の変化を管理する
-    private MoveType _moveType;
+    private MoveBase _moveType;
     public EMove EMove
     {
         get { return _eMove; }
@@ -42,6 +46,9 @@ public class EnemyMove : MonoBehaviour
                 case EMove.A:
                     _moveType = new EnemyTypeA(this, _playerPresenter);
                     break;
+                case EMove.B:
+                    _moveType = new EnemyMoveBaseB(this, _playerPresenter);
+                    break;
             }
             _eMove = value;
         }
@@ -51,8 +58,11 @@ public class EnemyMove : MonoBehaviour
 
     private void Start()
     {
+        var gm = GameObject.Find("GameManager");
+        _gameManager = GetComponent<GameManager>();
+
         //プレイヤーの情報を取得
-        var gameObject = GameObject.Find("player(Clone)");
+        var gameObject = GameObject.Find("Player");
         if (gameObject == null)
         {
             Debug.Log("プレイヤーを取得できませんでした");
@@ -83,6 +93,17 @@ public class EnemyMove : MonoBehaviour
     {
         var areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
         areaController._onEnemy = false;
+
+        if(gameObject.tag == "Boss")
+        {
+            _gameManager.DetBoosEnemy();
+        }
+
+        if(gameObject.tag == "GameBoss")
+        {
+            Debug.Log("ゲームクリア");
+        }
+
         Destroy(this.gameObject);
     }
 
@@ -98,6 +119,7 @@ public class EnemyMove : MonoBehaviour
                     _pointX = x;
                     _pointZ = z;
                     //Debug.Log("現在の配列番号" + _pointX + " , " + _pointZ);
+                    _canMove = true;
                 }
             }
         }

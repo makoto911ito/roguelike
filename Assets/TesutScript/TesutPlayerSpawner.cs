@@ -2,12 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// プレイヤーを生成するためのスクリプト
-/// </summary>
-public class SponPlayer : MonoBehaviour
+public class TesutPlayerSpawner : MonoBehaviour
 {
-    /// <summary>配列の一つ目の要素の場所をランダムで見るための変数</summary>
+        /// <summary>配列の一つ目の要素の場所をランダムで見るための変数</summary>
     int _randomNumX;
 
     /// <summary>配列の二つ目の要素の場所をランダムで見るための変数</summary>
@@ -26,20 +23,18 @@ public class SponPlayer : MonoBehaviour
     {
         _spon = false;
 
-        Debug.Log(MapManager._areas.GetLength(0) + " " + MapManager._areas.GetLength(0));
-
         while (_spon == false)
         {
-            _randomNumX = Random.Range(0, MapManager._x);
-            _randomNumZ = Random.Range(0, MapManager._z);
+            _randomNumX = Random.Range(0, TesutMap._x);
+            _randomNumZ = Random.Range(0, TesutMap._z);
 
-            if (MapManager._areas[_randomNumX, _randomNumZ] == null)
+            if (TesutMap._areas[_randomNumX, _randomNumZ] == null)
             {
                 continue;
             }
-            else if (MapManager._areas[_randomNumX, _randomNumZ] != null)
+            else if (TesutMap._areas[_randomNumX, _randomNumZ] != null)
             {
-                areaController = MapManager._areas[_randomNumX, _randomNumZ].GetComponent<AreaController>();
+                areaController = TesutMap._areas[_randomNumX, _randomNumZ].GetComponent<AreaController>();
                 Debug.Log("反応している");
 
                 if (areaController._onEnemy == true || areaController._onWall == true)
@@ -52,14 +47,14 @@ public class SponPlayer : MonoBehaviour
                     if (GameObject.Find("Player") == false)
                     {
                         Debug.Log("プレイヤーは生成された");
-                        var _playerObj = Instantiate(_player, new Vector3(MapManager._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, MapManager._areas[_randomNumX, _randomNumZ].transform.position.z), Quaternion.identity);
+                        var _playerObj = Instantiate(_player, new Vector3(TesutMap._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, TesutMap._areas[_randomNumX, _randomNumZ].transform.position.z), Quaternion.identity);
                         _playerObj.name = "Player";
                         _spon = true;
                     }
                     else
                     {
                         var _player = GameObject.Find("Player");
-                        _player.transform.position = new Vector3(MapManager._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, MapManager._areas[_randomNumX, _randomNumZ].transform.position.z);
+                        _player.transform.position = new Vector3(TesutMap._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, TesutMap._areas[_randomNumX, _randomNumZ].transform.position.z);
                         _spon = true;
                     }
 
@@ -67,5 +62,4 @@ public class SponPlayer : MonoBehaviour
             }
         }
     }
-
 }
