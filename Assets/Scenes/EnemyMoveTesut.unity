@@ -316,7 +316,7 @@ MonoBehaviour:
   - {fileID: 2633517592270577836, guid: cee1a611eb572da4483cd2d8c5ccc60e, type: 3}
   _bossEnemys:
   - {fileID: 5664647053842663672, guid: e2e72b9483f8afa4b82b03e89056a742, type: 3}
-  _sponEnemyNum: 5
+  _sponEnemyNum: 0
   _enemyList: {fileID: 1061322646}
 --- !u!4 &84887296
 Transform:
@@ -1051,8 +1051,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19abfc86226412469738e096ddb2312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audio: {fileID: 8300000, guid: 1f803e28680fae842a0c5ebdfde1524d, type: 3}
-  _sponImage: {fileID: 676172736}
+  _audio: {fileID: 8300000, guid: 7599aad261ff27846b2bc930280dad44, type: 3}
+  _sponImage: {fileID: 563096454}
   _notesImage: {fileID: 5216238594323837904, guid: 7063b33740db1d540bf93ece79efd3d4, type: 3}
   _notesPoint: {fileID: 28140992}
   _enemyList: {fileID: 1061322646}

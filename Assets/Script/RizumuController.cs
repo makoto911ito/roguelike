@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RizumuController : MonoBehaviour
 {
     [SerializeField] AudioClip _audio;
-    AudioSource _audioSource = default;
+    AudioSource _audioSource;
 
     //[SerializeField] Text _testText;
 
@@ -24,6 +24,7 @@ public class RizumuController : MonoBehaviour
 
     /// <summary>１ビートの秒数</summary>
     float _beatTime = 0;
+    float _noteTime = 0;
 
     static public float _moveTime = 0;
 
@@ -37,7 +38,11 @@ public class RizumuController : MonoBehaviour
     [SerializeField] NotesMove _notesImage;
     [SerializeField] Image _notesPoint;
 
+    [SerializeField] Text _testText;
+
     [SerializeField] EnemyList _enemyList;
+
+    bool _sound = false;
 
     public void Judgetiming(float audioTime, float moveNumber, string direction)
     {
@@ -56,7 +61,10 @@ public class RizumuController : MonoBehaviour
 
     public void PlaySound()
     {
-        _audioSource = GetComponent<AudioSource>();
+        if(_audioSource == null)
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
 
         //与えられた音源の周波数を確認
         _frequency = _audio.frequency;
@@ -72,18 +80,27 @@ public class RizumuController : MonoBehaviour
 
         _beatTime = 60 / _bpm;
 
+        _noteTime =_beatTime * _frequency;
+
         //判定のズレの秒数を取得
         _judgeTime = _frequency * Time.fixedDeltaTime;
 
         //曲を流す
         _audioSource.clip = _audio;
         _audioSource.Play();
+        _sound = true;
     }
 
-    public void NowPlayerSpawn()
+    public void StopSound()
     {
-        _player = GameObject.Find("Player");
-        _playerMove = _player.GetComponent<PlayerMove>();
+        _sound = false;
+        _audioSource.Stop();
+        _count = 1;
+    }
+
+    public void NowPlayerSpawn(PlayerMove player)
+    {
+        _playerMove = player.GetComponent<PlayerMove>();
     }
 
     //Debug.Log(_audioSource.timeSamples + "　タイム");
@@ -94,29 +111,34 @@ public class RizumuController : MonoBehaviour
 
     private void Update()
     {
-        _time = _audioSource.time;
-        _moveTime = _audioSource.timeSamples;//曲の経過時間を取得
-        _beat = Beat(_count);//判定の間隔を取得
-        _mae = _beat - _judgeTime;//取得した判定の前ズレ
-        _usiro = _beat + _judgeTime;//取得した間隔の後ズレ
-
-        _keikajikan = _moveTime - _beat;
-        if (_moveTime >= _beat)
+        if (_sound == true)
         {
-            //Debug.Log(_time);
-            //_testText.text = "はい".ToString();
-        }
+            //Debug.Log("動いている");
 
-        if (_keikajikan > _judgeTime && _moveTime > _usiro)
-        {
+            _time = _audioSource.time;
+            _moveTime = _audioSource.timeSamples;//曲の経過時間を取得
+            _beat = Beat(_count);//判定の間隔を取得
+            _mae = _beat - _judgeTime;//取得した判定の前ズレ
+            _usiro = _beat + _judgeTime;//取得した間隔の後ズレ
 
-            _enemyList.GoEnemyMove();
-            //_testText.text = "".ToString();
-            _count++;
-            var image = Instantiate(_notesImage, _sponImage.rectTransform);
-            //image.transform.parent = _notesPoint.transform;
-            image.transform.SetParent(_notesPoint.transform);
-            image.Setup(_beatTime);
+            _keikajikan = _moveTime - _beat;
+            if (_moveTime >= _mae)
+            {
+                //Debug.Log(_time);
+                //_testText.text = "はい".ToString();
+            }
+
+            if (_keikajikan > _judgeTime && _moveTime > _usiro)
+            {
+
+                _enemyList.GoEnemyMove();
+                _testText.text = "".ToString();
+                _count++;
+                var image = Instantiate(_notesImage, _sponImage.rectTransform);
+                //image.transform.parent = _notesPoint.transform;
+                image.transform.SetParent(_notesPoint.transform);
+                image.Setup(_noteTime, _judgeTime);
+            }
         }
     }
 

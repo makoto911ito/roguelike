@@ -18,7 +18,7 @@ public class AreaController : MonoBehaviour
         {
             _onPlayer = true;
         }
-        else if (collision.gameObject.CompareTag("Enemy"))
+        else if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Boss"))
         {
             _onEnemy = true;
         }

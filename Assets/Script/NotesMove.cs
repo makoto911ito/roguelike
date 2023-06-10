@@ -18,13 +18,20 @@ public class NotesMove : MonoBehaviour
     RectTransform _pointRect;
     RectTransform _myRect;
 
+    float _speed = 0;
+
+    float _behainTime;
+
     /// <summary>
     /// １ビートの秒数を取得するための関数
     /// </summary>
     /// <param name="beat">１ビートの秒数</param>
-    public void Setup(float beat)
+    public void Setup(float beat , float behind)
     {
         _time = beat;
+        _behainTime = behind;
+        Debug.Log(_time + "ノーツの速度");
+        Debug.Log(_behainTime + "誤差");
     }
 
     // Start is called before the first frame update
@@ -38,16 +45,25 @@ public class NotesMove : MonoBehaviour
 
         //Debug.Log(_pointRect.anchoredPosition.x);
 
-        _kyori = Mathf.Abs(_myRect.anchoredPosition.x - _pointRect.anchoredPosition.x);
+        _kyori = Mathf.Abs(_myRect.transform.position.x - _pointRect.transform.position.x);
         //Debug.Log(_kyori);
+
+        _speed = _kyori %( _time + _behainTime);
+
+        Debug.Log(_speed);
     }
 
     // Update is called once per frame
     void Update()
     {
-        _myRect.anchoredPosition = new Vector2(_myRect.anchoredPosition.x + _kyori * _time * Time.deltaTime * 1f, 0);
+        _myRect.transform.position += new Vector3(_speed * Time.deltaTime * 1.5f, 0,0);
 
-        if (_myRect.anchoredPosition.x >= _pointRect.anchoredPosition.x)
+        //if (_myRect.anchoredPosition.x >= _pointRect.anchoredPosition.x)
+        //{
+        //    Destroy(gameObject);
+        //}
+
+        if (_myRect.transform.position.x >= _pointRect.transform.position.x + 10)
         {
             Destroy(gameObject);
         }

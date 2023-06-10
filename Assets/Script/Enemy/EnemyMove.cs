@@ -34,6 +34,8 @@ public class EnemyMove : MonoBehaviour
 
     GameManager _gameManager;
 
+    EnemyList _enemyList;
+
     //ここで行動の変化を管理する
     private MoveBase _moveType;
     public EMove EMove
@@ -44,7 +46,7 @@ public class EnemyMove : MonoBehaviour
             switch (value)
             {
                 case EMove.A:
-                    _moveType = new EnemyTypeA(this, _playerPresenter);
+                    _moveType = new EnemyMoveBaseA(this, _playerPresenter);
                     break;
                 case EMove.B:
                     _moveType = new EnemyMoveBaseB(this, _playerPresenter);
@@ -59,7 +61,7 @@ public class EnemyMove : MonoBehaviour
     private void Start()
     {
         var gm = GameObject.Find("GameManager");
-        _gameManager = GetComponent<GameManager>();
+        _gameManager = gm.GetComponent<GameManager>();
 
         //プレイヤーの情報を取得
         var gameObject = GameObject.Find("Player");
@@ -85,7 +87,7 @@ public class EnemyMove : MonoBehaviour
     public void Attack()
     {
         //攻撃をする
-        _playerPresenter.Damage(1);
+        _playerPresenter.EnemyAttack(1);
     }
 
 
@@ -94,14 +96,14 @@ public class EnemyMove : MonoBehaviour
         var areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
         areaController._onEnemy = false;
 
-        if(gameObject.tag == "Boss")
+        if (gameObject.tag == "Boss")
         {
             _gameManager.DetBoosEnemy();
         }
 
-        if(gameObject.tag == "GameBoss")
+        if (gameObject.tag == "GameBoss")
         {
-            Debug.Log("ゲームクリア");
+            _gameManager.DetGameBoosEnemy();
         }
 
         Destroy(this.gameObject);

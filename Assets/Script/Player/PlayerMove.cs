@@ -35,8 +35,16 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _playerPresenter.Init();
+        var gm = GameObject.Find("GameManager");
+        _gameManager = gm.GetComponent<GameManager>();
+        if(_gameManager == null)
+        {
+            Debug.Log("GameManagerが取得できていません");
+        }
 
+        var life = GameObject.Find("heartSlider");
+
+        _playerPresenter.SetLife(life,_gameManager);
 
         var enemyList = GameObject.Find("EnemyList");
 
@@ -47,10 +55,6 @@ public class PlayerMove : MonoBehaviour
         _audioSource = rizumuController.GetComponent<AudioSource>();
 
         _rizumuController = rizumuController.GetComponent<RizumuController>();
-
-        var gm = GameObject.Find("GameManager");
-
-        _gameManager = gm.GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -84,7 +88,7 @@ public class PlayerMove : MonoBehaviour
         if (direction == "Horizontal")
         {
             //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-            areaController = MapManager._areas[_pointX + (int)moveNum, _pointZ].GetComponent<AreaController>();
+            areaController = MapManager._areas[_pointX + _moveNum, _pointZ].GetComponent<AreaController>();
 
             //移動先の情報によって行動を決める
             if (areaController._onWall == true)
@@ -94,7 +98,7 @@ public class PlayerMove : MonoBehaviour
             else if (areaController._onEnemy == true)
             {
                 Debug.Log("攻撃");
-                _EnemyList.CheckEnemy(_pointX + (int)moveNum, _pointZ, 1);
+                _EnemyList.CheckEnemy(_pointX + _moveNum, _pointZ, 1);
                 //_playerPresenter.Attack(_pointX + 1, _pointZ);
             }
             else
@@ -103,8 +107,8 @@ public class PlayerMove : MonoBehaviour
                 areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
                 areaController._onPlayer = false;
                 Debug.Log("横に移動するコードが反応している");
-                this.transform.position = new Vector3(MapManager._areas[_pointX + (int)moveNum, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
-                _pointX = _pointX + (int)moveNum;
+                this.transform.position = new Vector3(MapManager._areas[_pointX + _moveNum, _pointZ].transform.position.x, this.transform.position.y, this.transform.position.z);
+                _pointX = _pointX + _moveNum;
                 StairCheck();
                 //_rizumuBase._bottu = true;
             }
@@ -112,7 +116,7 @@ public class PlayerMove : MonoBehaviour
         else if (direction == "Vertical")
         {
             //行きたい方向の情報を確認したいので移動先のスクリプトを取得する
-            areaController = MapManager._areas[_pointX, _pointZ + (int)moveNum].GetComponent<AreaController>();
+            areaController = MapManager._areas[_pointX, _pointZ + _moveNum].GetComponent<AreaController>();
 
             //移動先の情報によって行動を決める
             if (areaController._onWall == true)
@@ -122,7 +126,7 @@ public class PlayerMove : MonoBehaviour
             else if (areaController._onEnemy == true)
             {
                 Debug.Log("攻撃");
-                _EnemyList.CheckEnemy(_pointX, _pointZ + (int)moveNum, 1);
+                _EnemyList.CheckEnemy(_pointX, _pointZ + _moveNum, 1);
                 //_playerPresenter.Attack(_pointX + 1, _pointZ);
             }
             else
@@ -131,13 +135,16 @@ public class PlayerMove : MonoBehaviour
                 areaController = MapManager._areas[_pointX, _pointZ].GetComponent<AreaController>();
                 areaController._onPlayer = false;
                 Debug.Log("縦に移動するコードが反応している");
-                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, MapManager._areas[_pointX, _pointZ + (int)moveNum].transform.position.z);
-                _pointZ = _pointZ + (int)moveNum;
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, MapManager._areas[_pointX, _pointZ + _moveNum].transform.position.z);
+                _pointZ = _pointZ + _moveNum;
                 StairCheck();
                 //_rizumuBase._bottu = true;
             }
         }
+        _playerPresenter.SaveMyPosition(_pointX, _pointZ);
     }
+
+
 
 
     /// <summary>
@@ -300,7 +307,7 @@ public class PlayerMove : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        _rizumuController.NowPlayerSpawn();
+        _rizumuController.NowPlayerSpawn(this);
 
         Debug.Log("プレイヤーが持っている配列の最大数" + MapManager._areas.GetLength(0) + " " + MapManager._areas.GetLength(0));
 
@@ -314,6 +321,7 @@ public class PlayerMove : MonoBehaviour
                     _pointX = x;
                     _pointZ = z;
                     Debug.Log("現在の配列番号" + _pointX + "x"  +" , " + _pointZ + "z");
+                    _playerPresenter.SaveMyPosition(_pointX, _pointZ);
                 }
             }
         }

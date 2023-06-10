@@ -22,6 +22,9 @@ public class SponPlayer : MonoBehaviour
     /// <summary>移動先・前を確認、変更するためのAreaControllerスクリプトを獲得する変数</summary>
     AreaController areaController;
 
+    //プレイヤーがスポーンしたときから曲を再生させたいからゲームマネージャーを取得
+    [SerializeField] GameManager _gameManager;
+
     public void Spon()
     {
         _spon = false;
@@ -62,7 +65,8 @@ public class SponPlayer : MonoBehaviour
                         _player.transform.position = new Vector3(MapManager._areas[_randomNumX, _randomNumZ].transform.position.x, 1.5f, MapManager._areas[_randomNumX, _randomNumZ].transform.position.z);
                         _spon = true;
                     }
-
+                    _gameManager.LoadMap(false);
+                    _gameManager.GoSound();
                 }
             }
         }

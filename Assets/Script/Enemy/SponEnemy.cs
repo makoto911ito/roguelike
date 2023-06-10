@@ -28,10 +28,12 @@ public class SponEnemy : MonoBehaviour
     /// <summary></summary>
     [SerializeField] EnemyList _enemyList = null;
 
-    [SerializeField] 
+    [SerializeField]
 
-    public void Spon()
+    public void Spon(int sponNum)
     {
+        _sponEnemyNum = sponNum;
+
         for (var i = 0; i < _sponEnemyNum; i++)
         {
             _randoEnemyNum = Random.Range(0, _enemys.Length);
@@ -65,7 +67,7 @@ public class SponEnemy : MonoBehaviour
 
     }
 
-    public void BossSpon()
+    public void BossSpon(bool LastMap)
     {
         int _randomNum = Random.Range(0, _bossEnemys.Length);
         bool _isSpon = true;
@@ -73,7 +75,7 @@ public class SponEnemy : MonoBehaviour
         int _randomBossPosNumX = 0;
         int _randomBossPosNumZ = 0;
 
-        while(_isSpon)
+        while (_isSpon)
         {
             _randomBossPosNumX = Random.Range(0, MapManager._x);
             _randomBossPosNumZ = Random.Range(0, MapManager._z);
@@ -93,10 +95,20 @@ public class SponEnemy : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("ボスキャラが生成された");
-                    GameObject _enemy = Instantiate(_bossEnemys[_randomNum], new Vector3(MapManager._areas[_randomBossPosNumX, _randomBossPosNumZ].transform.position.x, 1.5f, MapManager._areas[_randomBossPosNumX, _randomBossPosNumZ].transform.position.z), Quaternion.identity);
-                    _enemyList.Enemy(_enemy);
-                    _isSpon = false;
+                    if (LastMap != true)
+                    {
+                        Debug.Log("ボスキャラが生成された");
+                        GameObject _enemy = Instantiate(_bossEnemys[_randomNum], new Vector3(MapManager._areas[_randomBossPosNumX, _randomBossPosNumZ].transform.position.x, 1.5f, MapManager._areas[_randomBossPosNumX, _randomBossPosNumZ].transform.position.z), Quaternion.identity);
+                        _enemyList.Enemy(_enemy);
+                        _isSpon = false;
+                    }
+                    else
+                    {
+                        Debug.Log("ラスボスが現れた");
+                        GameObject _enemy = Instantiate(_bossEnemys[_randomNum], new Vector3(MapManager._areas[_randomBossPosNumX, _randomBossPosNumZ].transform.position.x, 1.5f, MapManager._areas[_randomBossPosNumX, _randomBossPosNumZ].transform.position.z), Quaternion.identity);
+                        _enemyList.Enemy(_enemy);
+                        _isSpon = false;
+                    }
 
                 }
             }

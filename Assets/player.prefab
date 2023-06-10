@@ -240,7 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerView: {fileID: -699769423902699967}
   _enemyList: {fileID: 2737689995525181992, guid: c0aec0d1acd524446a0d3f16a5df94ec, type: 3}
-  _playerHp: 1
+  _playerHp: 5
 --- !u!114 &-699769423902699967
 MonoBehaviour:
   m_ObjectHideFlags: 0

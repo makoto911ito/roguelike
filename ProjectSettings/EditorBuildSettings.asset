@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TesutPlay.unity
-    guid: e803c6d10f0c0b049b4a0d1626b6b5fa
+    path: Assets/Scenes/GameSenes/TitleScene.unity
+    guid: aa4a939132e94d64ebc4971f81434d22
+  - enabled: 1
+    path: Assets/Scenes/GameSenes/GameScene.unity
+    guid: 0433b927d50a463408d6ce641918ec1e
+  - enabled: 1
+    path: Assets/Scenes/GameSenes/SelectScene.unity
+    guid: bded5ee5542fabb4fb96d68fcd164d25
   m_configObjects: {}

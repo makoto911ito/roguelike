@@ -19,13 +19,30 @@ public class EnemyList : MonoBehaviour
 
     public void EnemyDestroy(GameObject destroyEnemy)
     {
-        for(var i = 0; i < _enemys.Count; i++)
+        for (var i = 0; i < _enemys.Count; i++)
         {
-            if(_enemys[i] == destroyEnemy)
+            if (_enemys[i] == destroyEnemy)
             {
+                Debug.Log("”j‰ó‚·‚é“GŒ©‚Â‚¯‚½");
+
                 EnemyMove _enemyMove = _enemys[i].GetComponent<EnemyMove>();
-                _enemyMove.DeleteEnemy();
                 _enemys.Remove(destroyEnemy);
+                _enemyMove.DeleteEnemy();
+
+            }
+        }
+    }
+
+    public void EnemyReset()
+    {
+        for (var i = 0; i < _enemys.Count; i++)
+        {
+            var _enemyMove = _enemys[i].GetComponent<EnemyMove>();
+            _enemyMove.DeleteEnemy();
+
+            if (i == _enemys.Count - 1)
+            {
+                _enemys.Clear();
             }
         }
     }

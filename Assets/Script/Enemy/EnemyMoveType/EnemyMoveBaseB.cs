@@ -8,6 +8,7 @@ class EnemyMoveBaseB : MoveBase
     private readonly PlayerPresenter _playerPresenter;
 
     bool _frg = false;
+    bool _canMove = false;
 
     /// <summary>ステージの情報を管理しているスクリプトを参照するための変数</summary>
     AreaController areaController;
@@ -20,42 +21,55 @@ class EnemyMoveBaseB : MoveBase
 
     public override void Move()
     {
-        Debug.Log("敵の初期値" + "x " + _enemyMove._pointX + " z " + _enemyMove._pointZ);
-        if(_enemyMove._canMove == true)
+        if (_canMove == false)
         {
-            for (int i = _enemyMove._pointX - 5; i <= _enemyMove._pointX + 5; i++)
+            _canMove = true;
+        }
+        else
+        {
+            _canMove = false;
+        }
+
+        //Debug.Log("敵の初期値" + "x " + _enemyMove._pointX + " z " + _enemyMove._pointZ);
+        if (_enemyMove._canMove == true)
+        {
+            if (_canMove == true)
             {
-                if (MapManager._areas.GetLength(0) <= i || 0 > i)
+                for (int i = _enemyMove._pointX - 10; i <= _enemyMove._pointX + 10; i++)
                 {
-                    continue;
-                }
-                else
-                {
-                    for (int j = _enemyMove._pointZ - 5; j <= _enemyMove._pointZ + 5; j++)
+                    if (MapManager._areas.GetLength(0) <= i || 0 > i)
                     {
-                        if (MapManager._areas.GetLength(1) <= j || 0 > j)
+                        continue;
+                    }
+                    else
+                    {
+                        for (int j = _enemyMove._pointZ - 10; j <= _enemyMove._pointZ + 10; j++)
                         {
-                            continue;
-                        }
-                        else
-                        {
-
-                            Debug.Log("x " + i + " z " + j);
-                            var areaController = MapManager._areas[i, j].GetComponent<AreaController>();
-
-                            if (areaController._onPlayer == true)
+                            if (MapManager._areas.GetLength(1) <= j || 0 > j)
                             {
-                                Debug.Log("プレイヤーを見つけた");
-                                CheackDistance(i, j);
+                                continue;
+                            }
+                            else
+                            {
 
-                                break;
+                                //Debug.Log("x " + i + " z " + j);
+                                var areaController = MapManager._areas[i, j].GetComponent<AreaController>();
+
+                                if (areaController._onPlayer == true)
+                                {
+                                    Debug.Log("プレイヤーを見つけた");
+                                    CheackDistance(i, j);
+
+                                    break;
+                                }
                             }
                         }
                     }
-                }
 
-                Debug.Log("プレイヤーが見つからなかった");
+                    Debug.Log("プレイヤーが見つからなかった");
+                }
             }
+
         }
     }
 
@@ -67,7 +81,7 @@ class EnemyMoveBaseB : MoveBase
         if (_PlayerX < 0 && _enemyMove._pointX < 0 || _PlayerZ > 0 && _enemyMove._pointX > 0)
         {
             int _distanceX = _PlayerX - _enemyMove._pointX;
-            int _distanceZ = _PlayerZ - _enemyMove._pointX;
+            int _distanceZ = _PlayerZ - _enemyMove._pointZ;
 
             if (_distanceX < 0)//マイナスのままだと比較しずらいのでマイナスを外す
             {
@@ -87,7 +101,39 @@ class EnemyMoveBaseB : MoveBase
                 _cheackNumZ = _distanceZ;
             }
 
-            if (_cheackNumX == 0)
+            Debug.Log("計算結果" + _cheackNumX + "  " + _cheackNumZ);
+
+            if (_cheackNumX == _cheackNumZ)
+            {
+                int _rndom = Random.Range(0, 2);
+
+                if (_rndom == 0)
+                {
+                    if (_PlayerX - _enemyMove._pointX < 0)
+                    {
+                        _frg = false;
+                    }
+                    else
+                    {
+                        _frg = true;
+                    }
+                    GoMove("x");
+                }
+                else
+                {
+                    if (_PlayerZ - _enemyMove._pointZ < 0)
+                    {
+                        _frg = false;
+                    }
+                    else
+                    {
+                        _frg = true;
+                    }
+                    //Zのほうが距離遠いので詰めるように動く
+                    GoMove("z");
+                }
+            }
+            else if (_cheackNumX == 0)
             {
                 if (_PlayerZ - _enemyMove._pointZ < 0)
                 {
@@ -98,7 +144,7 @@ class EnemyMoveBaseB : MoveBase
                     _frg = true;
                 }
                 //X座標の距離が０だったのでZの方に行くコードに飛ぶ
-                GoMove(_frg, "z");
+                GoMove("z");
             }
             else if (_cheackNumZ == 0)
             {
@@ -112,13 +158,14 @@ class EnemyMoveBaseB : MoveBase
                 }
 
                 //Z座標の距離が０だったのでXの方に行くコードに飛ぶ
-                GoMove(_frg, "x");
+                GoMove("x");
             }
+
             else
             {
                 if (_cheackNumX > _cheackNumZ)
                 {
-                    if(_PlayerX - _enemyMove._pointX < 0)
+                    if (_PlayerX - _enemyMove._pointX < 0)
                     {
                         _frg = false;
                     }
@@ -128,7 +175,7 @@ class EnemyMoveBaseB : MoveBase
                     }
 
                     //Xの方が距離遠いので詰めるように動く
-                    GoMove(_frg, "x");
+                    GoMove("x");
                 }
                 else
                 {
@@ -141,13 +188,13 @@ class EnemyMoveBaseB : MoveBase
                         _frg = true;
                     }
                     //Zのほうが距離遠いので詰めるように動く
-                    GoMove(_frg, "z");
+                    GoMove("z");
                 }
             }
         }
     }
 
-    private void GoMove(bool _distance, string _muki)
+    private void GoMove(string _muki)
     {
         if (_muki == "x")
         {
@@ -158,11 +205,14 @@ class EnemyMoveBaseB : MoveBase
                 if (areaController._onWall == true)
                 {
                     //反対に移動するかもしれない
+                    //壁を壊して進むように将来的にしたい
                 }
                 else if (areaController._onEnemy == true) { }
                 else if (areaController._onPlayer == true)
                 {
+                    Debug.Log("プレイヤーに攻撃");
                     //攻撃をする
+                    _playerPresenter.EnemyAttack(1);
                 }
                 else
                 {
@@ -184,7 +234,9 @@ class EnemyMoveBaseB : MoveBase
                 else if (areaController._onEnemy == true) { }
                 else if (areaController._onPlayer == true)
                 {
+                    Debug.Log("プレイヤーに攻撃");
                     //攻撃をする
+                    _playerPresenter.EnemyAttack(1);
                 }
                 else
                 {
@@ -209,7 +261,9 @@ class EnemyMoveBaseB : MoveBase
                 else if (areaController._onEnemy == true) { }
                 else if (areaController._onPlayer == true)
                 {
+                    Debug.Log("プレイヤーに攻撃");
                     //攻撃をする
+                    _playerPresenter.EnemyAttack(1);
                 }
                 else
                 {
@@ -217,7 +271,10 @@ class EnemyMoveBaseB : MoveBase
                     areaController = MapManager._areas[_enemyMove._pointX, _enemyMove._pointZ].GetComponent<AreaController>();
                     areaController._onEnemy = false;
                     _enemyMove.transform.position = new Vector3(_enemyMove.transform.position.x, _enemyMove.transform.position.y, MapManager._areas[_enemyMove._pointX, _enemyMove._pointZ + 1].transform.position.z);
+
+                    Debug.Log("変更前の位置" + _enemyMove._pointZ);
                     _enemyMove._pointZ = _enemyMove._pointZ + 1;
+                    Debug.Log("変更後の位置" + _enemyMove._pointZ);
                 }
             }
             else
@@ -231,7 +288,9 @@ class EnemyMoveBaseB : MoveBase
                 else if (areaController._onEnemy == true) { }
                 else if (areaController._onPlayer == true)
                 {
+                    Debug.Log("プレイヤーに攻撃");
                     //攻撃をする
+                    _playerPresenter.EnemyAttack(1);
                 }
                 else
                 {
@@ -239,7 +298,9 @@ class EnemyMoveBaseB : MoveBase
                     areaController = MapManager._areas[_enemyMove._pointX, _enemyMove._pointX].GetComponent<AreaController>();
                     areaController._onEnemy = false;
                     _enemyMove.transform.position = new Vector3(_enemyMove.transform.position.x, _enemyMove.transform.position.y, MapManager._areas[_enemyMove._pointX, _enemyMove._pointZ - 1].transform.position.z);
+                    Debug.Log("変更前の位置" + _enemyMove._pointZ);
                     _enemyMove._pointZ = _enemyMove._pointZ - 1;
+                    Debug.Log("変更後の位置" + _enemyMove._pointZ);
                 }
             }
         }

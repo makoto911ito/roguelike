@@ -86,9 +86,9 @@ public class TesutMap : MonoBehaviour
         //プレイヤーをスポーンさせる
         _sponPlayer.Spon();
         //敵キャラをスポーンさせる
-        _sponEnemy.Spon();
+        _sponEnemy.Spon(0);
         //ボス敵をスポーンさせる
-        _sponEnemy.BossSpon();
+        _sponEnemy.BossSpon(false);
     }
 
 

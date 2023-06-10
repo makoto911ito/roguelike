@@ -19,6 +19,10 @@ public class EnemyPresenter : MonoBehaviour
         var gameObject = GameObject.Find("EnemyList");
 
         _enemyList = gameObject.GetComponent<EnemyList>();
+        if(_enemyList == null)
+        {
+            Debug.Log("EnemyList‚ªŽæ“¾‚Å‚«‚Ä‚¢‚Ü‚¹‚ñ");
+        }
     }
 
     public void Init()

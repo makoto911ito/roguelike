@@ -79,6 +79,9 @@ public class MapManager : MonoBehaviour
 
     AreaController areaController;
 
+    bool _lastMap = false;
+
+
 
     public void MapCreate(GameObject _mapController)
     {
@@ -143,7 +146,9 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z > _zLine)
                                         {
-                                            _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            obj.name = x + "/" + z;
+                                            _areas[x, z] = obj;
                                             _areas[x, z].transform.parent = _mapController.transform;
                                             _keepBackSide = x;
                                             _count++;
@@ -174,7 +179,9 @@ public class MapManager : MonoBehaviour
                                     {
                                         if (z < _zLine)
                                         {
-                                            _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
+                                            obj.name = x + "/" + z;
+                                            _areas[x, z] = obj;
                                             _areas[x, z].transform.parent = _mapController.transform;
                                             _keepBackSide = x;
                                             _count++;
@@ -204,7 +211,9 @@ public class MapManager : MonoBehaviour
                     for (int miti = _keepBackSide + 1; miti <= keepMaxArea; miti++)
                     {
                         //Debug.Log("動いた");
-                        _areas[miti, _areaUpPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
+                        var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUpPointZ), Quaternion.identity);
+                        obj.name = miti + "/" + _areaUpPointZ;
+                        _areas[miti, _areaUpPointZ] = obj;
                         _areas[miti, _areaUpPointZ].transform.parent = _mapController.transform;
                     }
                 }
@@ -213,7 +222,9 @@ public class MapManager : MonoBehaviour
                     for (int miti = _keepBackSide + 1; miti <= keepMaxArea; miti++)
                     {
                         //Debug.Log("動いた");
-                        _areas[miti, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
+                        var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(miti, 0, _areaUnderPointZ), Quaternion.identity);
+                        obj.name = miti + "/" + _areaUnderPointZ;
+                        _areas[miti, _areaUnderPointZ] = obj;
                         _areas[miti, _areaUnderPointZ].transform.parent = _mapController.transform;
                     }
                 }
@@ -226,7 +237,9 @@ public class MapManager : MonoBehaviour
                 {
                     for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
                     {
-                        _areas[aisle, _areaUpPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUpPointZ), Quaternion.identity);
+                        var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUpPointZ), Quaternion.identity);
+                        obj.name = aisle + "/" + _areaUpPointZ;
+                        _areas[aisle, _areaUpPointZ] = obj;
                         _areas[aisle, _areaUpPointZ].transform.parent = _mapController.transform;
                     }
 
@@ -235,7 +248,9 @@ public class MapManager : MonoBehaviour
                     {
                         for (int rodo = _areaUpPointZ + 1; rodo < _center; rodo++)
                         {
-                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            obj.name = _keepMinAreaSize + "/" + rodo;
+                            _areas[_keepMinAreaSize, rodo] = obj;
                             _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
@@ -243,7 +258,9 @@ public class MapManager : MonoBehaviour
                     {
                         for (int rodo = _center + 1; rodo < _areaUpPointZ; rodo++)
                         {
-                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            obj.name = _keepMinAreaSize + "/" + rodo;
+                            _areas[_keepMinAreaSize, rodo] = obj;
                             _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
@@ -252,7 +269,9 @@ public class MapManager : MonoBehaviour
                 {
                     for (int aisle = _keepMinAreaSize; aisle < _keepFrontSide; aisle++)
                     {
-                        _areas[aisle, _areaUnderPointZ] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
+                        var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(aisle, 0, _areaUnderPointZ), Quaternion.identity);
+                        obj.name = aisle + "/" + _areaUnderPointZ;
+                        _areas[aisle, _areaUnderPointZ] = obj;
                         _areas[aisle, _areaUnderPointZ].transform.parent = _mapController.transform;
                     }
 
@@ -261,7 +280,9 @@ public class MapManager : MonoBehaviour
                     {
                         for (int rodo = _areaUnderPointZ + 1; rodo < _center; rodo++)
                         {
-                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            obj.name = _keepMinAreaSize + "/" + rodo;
+                            _areas[_keepMinAreaSize, rodo] = obj;
                             _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
@@ -269,7 +290,9 @@ public class MapManager : MonoBehaviour
                     {
                         for (int rodo = _center + 1; rodo < _areaUnderPointZ; rodo++)
                         {
-                            _areas[_keepMinAreaSize, rodo] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            var obj = Instantiate(_obj[(int)AreaObj.walk], new Vector3(_keepMinAreaSize, 0, rodo), Quaternion.identity);
+                            obj.name = _keepMinAreaSize + "/" + rodo;
+                            _areas[_keepMinAreaSize, rodo] = obj;
                             _areas[_keepMinAreaSize, rodo].transform.parent = _mapController.transform;
                         }
                     }
@@ -293,19 +316,32 @@ public class MapManager : MonoBehaviour
         WallCreate(_mapController);
 
 
-        StartCoroutine("Spawner");
+        StartCoroutine(Spawner());
 
     }
 
     IEnumerator Spawner()
     {
-        yield return new WaitForSeconds(1);
+        int _sponNum = Random.Range(5, 20);
+
+        yield return new WaitForSeconds(0.5f);
         //プレイヤーをスポーンさせる
         _sponPlayer.Spon();
         //敵キャラをスポーンさせる
-        _sponEnemy.Spon();
+        _sponEnemy.Spon(_sponNum);
         //ボス敵をスポーンさせる
-        _sponEnemy.BossSpon();
+        _sponEnemy.BossSpon(_lastMap);
+    }
+
+    IEnumerator LastSpawner()
+    {
+        _lastMap = true;
+
+        yield return new WaitForSeconds(0.5f);
+        //プレイヤーをスポーンさせる
+        _sponPlayer.Spon();
+        //ボス敵をスポーンさせる
+        _sponEnemy.BossSpon(_lastMap);
     }
 
 
@@ -344,11 +380,11 @@ public class MapManager : MonoBehaviour
 
         for (var x = 1; x < 16; x++)
         {
-            for(var z = 1; z < _bossMapZ; z++)
+            for (var z = 1; z < _bossMapZ; z++)
             {
-                if(x >= 12)
+                if (x >= 12)
                 {
-                    if(z > 17 && z < 23)
+                    if (z > 17 && z < 23)
                     {
                         _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                         _areas[x, z].transform.parent = _mapController.transform;
@@ -363,9 +399,9 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        for(var x = 16; x < _bossMapX; x ++)
+        for (var x = 16; x < _bossMapX; x++)
         {
-            for(var z = 1; z < _bossMapZ; z++)
+            for (var z = 1; z < _bossMapZ; z++)
             {
                 _areas[x, z] = Instantiate(_obj[(int)AreaObj.walk], new Vector3(x, 0, z), Quaternion.identity);
                 _areas[x, z].transform.parent = _mapController.transform;
@@ -392,7 +428,7 @@ public class MapManager : MonoBehaviour
         }
 
 
-        StartCoroutine("Spawner");
+        StartCoroutine(LastSpawner());
 
     }
 }
